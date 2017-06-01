@@ -22,6 +22,7 @@ export default class NoteActivity extends React.Component {
 	saveNote = () => {
 		let notes = this.event.notes;
 		realm.write(() => {
+			this.event.updated_on = new Date();
 			notes.push({
 				id: Services.getUniqueID(),
 				description: this.state.noteText,
@@ -29,6 +30,7 @@ export default class NoteActivity extends React.Component {
 				updated_on: new Date()
 			});
 		});
+		this.props.navigation.goBack();
 	}
 
 	render() {
@@ -36,10 +38,11 @@ export default class NoteActivity extends React.Component {
 			<View style = {{flex: 1, backgroundColor: '#fff'}}>
 				{/*<Text style = {eventTitleStyle}>{this.event.title}</Text>*/}
 				<TextInput 
-					style = {inputStyle}
 					multiline = {true} 
 					numberOfLines = {10} 
 					autoFocus = {true}
+					style = {inputStyle}
+					autoCapitalize="sentences"
 					onChangeText = {(text) => {this.setState({noteText: text})}}
 					underlineColorAndroid = 'transparent' 
 					placeholder = "Enter note"/>

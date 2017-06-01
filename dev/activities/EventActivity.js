@@ -1,16 +1,28 @@
 import React from 'react';
 import moment from 'moment';
 import { ColorScheme } from '../css/style';
-import { Text, View, TouchableWithoutFeedback, Image, Modal, Button } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, Image, Modal, Button, FlatList } from 'react-native';
+import realm from '../database/schemas';
+import EntityItem from '../components/EntityItem';
+import Separator_1 from '../components/Separator_1';
 
 class EventActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			addModalVisible: false
+			addModalVisible: false,
+			notes: this.props.navigation.state.params.event.notes.sorted('updated_on', true)
 		}
 		this.addEntity = this.addEntity.bind(this);
+	}
+
+	componentDidMount() {
+		realm.addListener('change', () => {
+			this.setState({
+				notes: this.props.navigation.state.params.event.notes.sorted('updated_on', true)
+			})
+		})
 	}
 
 	static navigationOptions = {
@@ -40,6 +52,15 @@ class EventActivity extends React.Component {
 					<Text style = {{fontWeight: 'bold', fontSize: 15}}>Last updated: </Text>
 					<Text style = {{fontSize: 15}}>{moment(event.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
 				</View>
+
+				<FlatList 
+					style = {{marginTop: 30}}
+					data = {this.state.notes}
+					renderItem = {({item}) => <EntityItem text = {item.description}/>}
+					keyExtractor={(item, index) => item.id}
+					ItemSeparatorComponent = {() => <Separator_1 />}/>
+
+
 				<View style={{position: 'absolute', bottom: 20, right: 20}}>
 					<TouchableWithoutFeedback onPress = {() => {this.setState({addModalVisible: true})}}>
 						<View style = {buttonStyle}>
@@ -135,5 +156,6 @@ const entityBtn = {
 	padding: 15,
 	borderRadius: 100
 }
+
 
 export default EventActivity;
