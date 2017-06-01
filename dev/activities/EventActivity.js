@@ -55,7 +55,7 @@ class EventActivity extends React.Component {
 					onRequestClose = {() => {this.setState({addModalVisible: false})}}>
 
 					<View style = {addEnitityContainer}>
-						<Text style = {{fontSize: 35, textAlign: 'center', padding: 30}}>What do you want to add to this event?</Text>
+						<Text style = {{fontSize: 28, textAlign: 'center', padding: 30}}>What do you want to add to this event?</Text>
 						<TouchableWithoutFeedback onPress = {() => {this.addEntity('Note')}}>
 							<View style = {{justifyContent:'center', alignItems: 'center', marginBottom: 30}}>
 								<View style = {entityBtn}>
