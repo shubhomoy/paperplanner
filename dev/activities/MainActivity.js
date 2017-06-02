@@ -30,7 +30,11 @@ class MainActivity extends React.Component {
 	render() {	
 		return(
 			<View style = {viewStyle}>
-				<FlatList data = {this.state.events} renderItem = {({item}) => <EventItem event = {item} navigation = {this.props.navigation}/>} keyExtractor={(item, index) => item.id} ListFooterComponent = {listFooter} ref="eventList"/>
+				<FlatList 
+					data = {this.state.events} 
+					renderItem = {({item}) => <EventItem event = {item} navigation = {this.props.navigation}/>} 
+					keyExtractor={(item, index) => item.id} 
+					ListFooterComponent = {listFooter} ref="eventList"/>
 				<View style = {{position: 'absolute', flex: 1, bottom: 16, right: 16}}>
 					<TouchableNativeFeedback onPress = {Actions.createEventActivity} background={TouchableNativeFeedback.SelectableBackground()}>
 						<View style = {buttonStyle}>

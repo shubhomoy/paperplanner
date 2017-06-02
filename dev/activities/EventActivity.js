@@ -54,33 +54,21 @@ class EventActivity extends React.Component {
 		this.setState({
 			addModalVisible: false
 		});
-		// this.props.navigation.navigate('Note', {
-		// 	event: this.state.event
-		// });
+		Actions.noteActivity({
+			event: this.state.event
+		});
 	}
 
 	render() {
 		return(
 			<View style = {{flex: 1}}>
-				<Text style = {eventTitleStyle}>{this.props.event.title}</Text>
-				<View style = {{flexDirection: 'row'}}>
-					<View>
-						<View style={dateStyle}>
-							<Text style = {{fontWeight: 'bold', fontSize: 15}}>Created on: </Text>
-							<Text style = {{fontSize: 15}}>{moment(this.state.event.created_on).format('ddd Do MMM YYYY').toString()}</Text>
+				<View style = {appbarStyle}>
+					<TouchableNativeFeedback onPress = {() => Actions.pop()} background={TouchableNativeFeedback.SelectableBackgroundBorderless()}>
+						<View style = {{height: 60, width: 50, justifyContent: 'center', alignItems: 'center'}}>
+							<Image source = {require('../images/back.png')} style = {{width: 20, height: 20}}/>
 						</View>
-						<View style={dateStyle}>
-							<Text style = {{fontWeight: 'bold', fontSize: 15}}>Last updated: </Text>
-							<Text style = {{fontSize: 15}}>{moment(this.state.event.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
-						</View>
-					</View>
-					<View style = {{justifyContent: 'center', alignItems: 'flex-end', flex: 1, paddingRight: 20}}>
-						<TouchableNativeFeedback onPress = {() => this.deleteEventConfirm()}>
-							<View style = {deleteBtn}>
-								<Text style = {{fontWeight: 'bold', color: '#fff'}}>DELETE EVENT</Text>
-							</View>
-						</TouchableNativeFeedback>
-					</View>
+					</TouchableNativeFeedback>
+					<Text style = {eventTitleStyle}>{this.props.event.title}</Text>
 				</View>
 
 				<FlatList 
@@ -146,11 +134,17 @@ class EventActivity extends React.Component {
 	}
 }
 
+const appbarStyle = {
+	flexDirection: 'row',
+	alignItems: 'center'
+}
+
 const eventTitleStyle = {
-	fontSize: 40,
-	color: '#212121',
+	flex: 1,
+	fontSize: 25,
+	color: ColorScheme.primary,
 	fontWeight: 'bold',
-	padding: 16
+	paddingRight: 20
 }
 
 const dateStyle = {

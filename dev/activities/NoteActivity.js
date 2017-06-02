@@ -3,6 +3,7 @@ import { Text, View, TextInput, Button, TouchableNativeFeedback } from 'react-na
 import { ColorScheme } from '../css/style';
 import realm from '../database/schemas';
 import Services from '../utils';
+import { Actions } from 'react-native-router-flux';
 
 export default class NoteActivity extends React.Component {
 
@@ -20,14 +21,15 @@ export default class NoteActivity extends React.Component {
 	saveNote = () => {
 		
 		realm.write(() => {
-			this.event.updated_on = new Date();
-			notes.push({
+			this.props.event.updated_on = new Date();
+			this.props.event.notes.push({
 				id: Services.getUniqueID(),
 				description: this.state.noteText,
 				created_on: new Date(),
 				updated_on: new Date()
 			});
 		});
+		Actions.pop();
 	}
 
 	render() {

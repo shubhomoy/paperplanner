@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableNativeFeedback, AsyncStorage } from 'react-native';
+import { View, Text, TextInput, TouchableNativeFeedback, Image, Dimensions, FlatList } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import {styles, ColorScheme} from '../css/style';
 import realm from '../database/schemas';
 import moment from 'moment';
 import Services from '../utils';
+import { BoxShadow } from 'react-native-shadow';
 import { Actions, ActionConst } from 'react-native-router-flux';
 
 class CreateEventActivity extends React.Component {
@@ -13,9 +14,25 @@ class CreateEventActivity extends React.Component {
 		super(props);
 		this.state = {
 			eventName: '',
-			error: false
+			nextShown: false,
+			options: ["Plan a Trip", "Throw a Party", "Organize an Event", "Make a Shopping List", "Make Appointment", "Track expense", "Do Homework", ]
 		}
 		this.saveEvent = this.saveEvent.bind(this);
+		this.showNext = this.showNext.bind(this);
+		this.renderOptionItem = this.renderOptionItem.bind(this);
+	}
+
+	renderOptionItem = (item) => {
+		return(
+			<TouchableNativeFeedback onPress = {() => {
+				this.setState({
+					eventName: item,
+					nextShown: true
+				});
+			}}>
+				<Text style = {optionsStyle}>{item}</Text>
+			</TouchableNativeFeedback>
+		);
 	}
 
 	saveEvent = () => {
@@ -40,63 +57,91 @@ class CreateEventActivity extends React.Component {
 	  	});
 	}
 
+	showNext = () => {
+		if(this.state.nextShown) {
+			return(
+				<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress = {() => this.saveEvent()}>
+					<View style = {{height: 60, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 50}}>
+						<Image source = {require('../images/next.png')} style = {{height: 25, width: 25}}/>
+					</View>
+				</TouchableNativeFeedback>
+			);
+		}else{
+			return null;
+		}
+	}
+
 	render() {
 		return(
 			<View style = {viewStyle}>
-				<Text style = {textStyle}>
-					What are you planning for?
-				</Text>
-				<View style={{flexDirection: 'row'}}>
-					<TextInput value = {this.state.eventName} onChangeText = {(text) => this.setState({eventName: text})} style={inputStyle} placeholder = "Event name" autoCapitalize="words" underlineColorAndroid="transparent" autoFocus={true}/>
-				</View>
-				<Text style = { this.state.error ? showError : hideError }>Oops! You've missed the event name!</Text>
-				<TouchableNativeFeedback onPress = {() => this.saveEvent()} background={TouchableNativeFeedback.SelectableBackground()}>
-					<View style = {buttonStyle}>
-						<Text style = {{fontSize: 15, color: '#fff', fontWeight: 'bold'}}>DONE</Text>
+				<BoxShadow setting = {shadowOpt}>
+					<View style = {inputContainer}>
+						<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress = {Actions.pop}>
+							<View style = {{height: 60, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 50}}>
+								<Image source = {require('../images/cross.png')} style = {{height: 15, width: 15}}/>
+							</View>
+						</TouchableNativeFeedback>
+						<TextInput 
+							value = {this.state.eventName} 
+							onChangeText = {(text) => {
+								if(text && text.trim().length > 0) {
+									this.setState({eventName: text, nextShown: true})
+								}else{
+									this.setState({eventName: text, nextShown: false})
+								}
+							}} 
+							style={inputStyle} 
+							placeholder = "I want to..." 
+							autoCapitalize="words" 
+							underlineColorAndroid="transparent" 
+							autoFocus={true}/>
+						{this.showNext()}
 					</View>
-				</TouchableNativeFeedback>
+				</BoxShadow>
+				<FlatList 
+					data = {this.state.options}
+					renderItem = {({item}) => this.renderOptionItem(item)}
+					keyExtractor = {(item) => item}/>
 			</View>
 		);
 	}
 }
 
+const shadowOpt = {
+	width: Dimensions.get('window').width,
+	height: 60,
+	color: '#000',
+	border: 10,
+	radius: 0,
+	opacity: 0.1,
+	x: 0,
+	y: 0,
+	style:{marginVertical:0}
+}
+
 const viewStyle = {
 	flex: 1,
-	justifyContent: 'center',
-	alignItems: 'center'
+	backgroundColor: '#fff'
 };
+
+const inputContainer = {
+	flex: 1,
+	alignItems: 'center',
+	backgroundColor: '#fff',
+	flexDirection: 'row'
+}
 
 const inputStyle = {
-	width: 250,
-	fontSize: 30,
-	textAlign: 'center',
-	borderWidth: 1,
-	borderRadius: 15,
-	fontWeight: 'bold'
+	flex: 1,
+	backgroundColor: '#fff',
+	fontSize: 20
 };
 
-const textStyle = {
-	fontSize: 25,
+const optionsStyle = {
+	fontSize: 17,
 	padding: 20,
-	textAlign: 'center'
-};
-
-const buttonStyle = {
-	padding: 15,
-	marginTop: 25,
-	paddingLeft: 25,
-	paddingRight: 25,
-	backgroundColor: ColorScheme.primary,
-	borderRadius: 50
-};
-
-const showError = {
-	color: '#B71C1C',
-	fontSize: 15
-};
-
-const hideError = {
-	display: 'none'
-};
+	paddingLeft: 50,
+	color: '#9E9E9E'
+}
 
 export default CreateEventActivity;
