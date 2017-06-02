@@ -1,10 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 import { ColorScheme } from '../css/style';
-import { Text, View, TouchableWithoutFeedback, Image, Modal, Button, FlatList } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, Alert, TouchableNativeFeedback, Image, Modal, Button, FlatList } from 'react-native';
 import realm from '../database/schemas';
 import EntityItem from '../components/EntityItem';
 import Separator_1 from '../components/Separator_1';
+import { Actions } from 'react-native-router-flux';
 
 class EventActivity extends React.Component {
 
@@ -12,51 +13,81 @@ class EventActivity extends React.Component {
 		super(props);
 		this.state = {
 			addModalVisible: false,
-			notes: this.props.navigation.state.params.event.notes.sorted('updated_on', true)
+			notes: this.props.event.notes.sorted('updated_on', true),
+			event: this.props.event
 		}
 		this.addEntity = this.addEntity.bind(this);
+		this.deleteEventConfirm = this.deleteEventConfirm.bind(this);
 	}
 
 	componentDidMount() {
 		realm.addListener('change', () => {
-			this.setState({
-				notes: this.props.navigation.state.params.event.notes.sorted('updated_on', true)
-			})
+			try{
+				if(this.refs.list && this.state.event.isValid()) {
+					this.setState({
+						notes: this.props.event.notes.sorted('updated_on', true)
+					})
+				}
+			}catch(error){}
 		})
 	}
 
-	static navigationOptions = {
-		header: false
+	deleteEventConfirm = () => {
+		Alert.alert('Delete Event', 'Are you sure you want to delete ' + this.state.event.title + '?',
+			[
+				{
+					text: 'No'
+				},
+				{
+					text: 'Yes',
+					onPress: () => {
+						realm.write(() => {
+							realm.delete(this.state.event);
+						});	
+						Actions.pop();
+					}
+				}
+			]);
 	}
 
 	addEntity = (entity) => {
 		this.setState({
 			addModalVisible: false
 		});
-		this.props.navigation.navigate('Note', {
-			event: this.props.navigation.state.params.event
-		});
+		// this.props.navigation.navigate('Note', {
+		// 	event: this.state.event
+		// });
 	}
 
 	render() {
-		const { state } = this.props.navigation;
-		let event = state.params.event;
 		return(
 			<View style = {{flex: 1}}>
-				<Text style = {eventTitleStyle}>{event.title}</Text>
-				<View style={dateStyle}>
-					<Text style = {{fontWeight: 'bold', fontSize: 15}}>Created on: </Text>
-					<Text style = {{fontSize: 15}}>{moment(event.created_on).format('ddd Do MMM YYYY').toString()}</Text>
-				</View>
-				<View style={dateStyle}>
-					<Text style = {{fontWeight: 'bold', fontSize: 15}}>Last updated: </Text>
-					<Text style = {{fontSize: 15}}>{moment(event.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
+				<Text style = {eventTitleStyle}>{this.props.event.title}</Text>
+				<View style = {{flexDirection: 'row'}}>
+					<View>
+						<View style={dateStyle}>
+							<Text style = {{fontWeight: 'bold', fontSize: 15}}>Created on: </Text>
+							<Text style = {{fontSize: 15}}>{moment(this.state.event.created_on).format('ddd Do MMM YYYY').toString()}</Text>
+						</View>
+						<View style={dateStyle}>
+							<Text style = {{fontWeight: 'bold', fontSize: 15}}>Last updated: </Text>
+							<Text style = {{fontSize: 15}}>{moment(this.state.event.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
+						</View>
+					</View>
+					<View style = {{justifyContent: 'center', alignItems: 'flex-end', flex: 1, paddingRight: 20}}>
+						<TouchableNativeFeedback onPress = {() => this.deleteEventConfirm()}>
+							<View style = {deleteBtn}>
+								<Text style = {{fontWeight: 'bold', color: '#fff'}}>DELETE EVENT</Text>
+							</View>
+						</TouchableNativeFeedback>
+					</View>
 				</View>
 
 				<FlatList 
+					ref = "list"
 					style = {{marginTop: 30}}
 					data = {this.state.notes}
-					renderItem = {({item}) => <EntityItem text = {item.description}/>}
+					renderItem = {({item}) => <EntityItem text = {item.description} createdOn = {item.created_on}/>}
 					keyExtractor={(item, index) => item.id}
 					ItemSeparatorComponent = {() => <Separator_1 />}/>
 
@@ -155,6 +186,14 @@ const entityBtn = {
 	backgroundColor: ColorScheme.primary,
 	padding: 15,
 	borderRadius: 100
+}
+
+const deleteBtn = {
+	backgroundColor: ColorScheme.redDark,
+	padding: 5,
+	borderRadius: 5,
+	paddingLeft: 10,
+	paddingRight: 10
 }
 
 

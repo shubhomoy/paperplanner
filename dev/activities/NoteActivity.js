@@ -8,19 +8,17 @@ export default class NoteActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.event = this.props.navigation.state.params.event;
+		
 		this.state = {
 			noteText: ''
 		}
 		this.saveNote = this.saveNote.bind(this);
 	}
 
-	static navigationOptions = {
-		title: 'Add Note'
-	}
+	
 
 	saveNote = () => {
-		let notes = this.event.notes;
+		
 		realm.write(() => {
 			this.event.updated_on = new Date();
 			notes.push({
@@ -30,7 +28,6 @@ export default class NoteActivity extends React.Component {
 				updated_on: new Date()
 			});
 		});
-		this.props.navigation.goBack();
 	}
 
 	render() {

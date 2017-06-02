@@ -2,7 +2,9 @@ import {StyleSheet} from 'react-native';
 
 export const ColorScheme = {
 	primary: '#306BAC',
-	primaryDark: '#141B41'
+	primaryDark: '#141B41',
+	red: '#F44336',
+	redDark: '#B71C1C'
 }
 
 export const styles = StyleSheet.create({

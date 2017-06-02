@@ -5,6 +5,7 @@ import {styles, ColorScheme} from '../css/style';
 import realm from '../database/schemas';
 import moment from 'moment';
 import Services from '../utils';
+import { Actions, ActionConst } from 'react-native-router-flux';
 
 class CreateEventActivity extends React.Component {
 
@@ -17,39 +18,25 @@ class CreateEventActivity extends React.Component {
 		this.saveEvent = this.saveEvent.bind(this);
 	}
 
-	static navigationOptions = {
-		title: 'Create Event'
-	};
-
 	saveEvent = () => {
-		let { goBack } = this.props.navigation;
 		if(!this.state.eventName.trim()) {
 			this.setState({error: true});
 			return;
 		}else{
 			this.setState({error: false});
 		}
-
+		let event = null;
 	  	realm.write(() => {
-	  		let now = moment();
-	  		let event = realm.create('Event', {
+	  		event = realm.create('Event', {
 	  			id: Services.getUniqueID(),
 	  			title: this.state.eventName,
 	  			created_on: new Date(),
 	  			updated_on: new Date()
 	  		});
-	  		this.props.navigation.dispatch(NavigationActions.reset({
-	  			index: 1,
-	  			actions: [
-	  				NavigationActions.navigate({routeName: 'Main'}),
-	  				NavigationActions.navigate({
-	  					routeName: 'Event',
-	  					params: {
-	  						event: event
-	  					}
-	  				})
-	  			]
-	  		}));
+	  	});
+	  	Actions.eventActivity({
+	  		type: ActionConst.REPLACE,
+	  		event: event
 	  	});
 	}
 

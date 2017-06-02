@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Text, View, Image } from 'react-native';
 
 export default class EntityItem extends React.Component {
@@ -11,6 +12,7 @@ export default class EntityItem extends React.Component {
 				</View>
 				<View style = {{width: '100%', height: 1, backgroundColor: '#dedede'}}/>
 				<Text style = {itemTextStyle}>{this.props.text}</Text>
+				<Text style = {{textAlign: 'right', padding: 10}}>Created on: {moment(this.props.createdOn).format('ddd Do MMM YYYY').toString()}</Text>
 			</View>
 		);
 	}

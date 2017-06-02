@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import moment from 'moment';
 import realm from '../database/schemas';
+import { Actions } from 'react-native-router-flux';
 
 class EventItem extends React.Component {
 
@@ -11,8 +12,9 @@ class EventItem extends React.Component {
 	}
 
 	openEvent = (event) => {
-		let { navigate } = this.props.navigation;
-		navigate('Event', {event: event});
+		Actions.eventActivity({
+			event: this.props.event
+		});
 		// realm.write(() => {
 		// 	realm.delete(realm.objectForPrimaryKey('Event', id));	
 		// });	
