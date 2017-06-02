@@ -1,16 +1,22 @@
 import React from 'React';
 import { View, Image } from 'react-native';
+import { ColorScheme } from '../css/style';
 
 export default class Separator_1 extends React.Component {
 	render() {
 		return(
 			<View style={sepStyle}>
-				<Image source = {require('../images/link.png')} style = {{width: 50, height: 50, marginLeft: 40}} />
+				
 			</View>
 		);
 	}
 }
 
 const sepStyle = {
-	width: '100%'
+	width: 2.5,
+	height: 50,
+	borderBottomLeftRadius: 2.5,
+	borderBottomRightRadius: 2.5,
+	marginLeft: 23.75,
+	backgroundColor: ColorScheme.primary
 }
