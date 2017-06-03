@@ -83,7 +83,8 @@ const container = {
 	paddingRight: 5,
 	paddingTop: 5,
 	paddingBottom: 5,
-	borderWidth: 0.5
+	borderWidth: 0.5,
+	borderColor: '#616161'
 }
 
 const textInputStyle = {

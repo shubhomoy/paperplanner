@@ -9,6 +9,7 @@ import AppBar from '../components/AppBar';
 import EntityItem from '../components/EntityItem';
 import SearchBar from '../components/SearchBar';
 import Separator_1 from '../components/Separator_1';
+import SecondaryButton from '../components/SecondaryButton';
 import { BoxShadow } from 'react-native-shadow';
 
 class MainActivity extends React.Component {
@@ -16,6 +17,7 @@ class MainActivity extends React.Component {
 	constructor(props) {
 		super(props);
 		this.newNote = this.newNote.bind(this);
+		this.gotoSettings = this.gotoSettings.bind(this);
 		this.renderFirstNote = this.renderFirstNote.bind(this);
 	}
 
@@ -31,6 +33,10 @@ class MainActivity extends React.Component {
 		Actions.noteActivity({
 			action: 'new'}
 		);
+	}
+
+	gotoSettings = () => {
+		Actions.settingsActivity();
 	}
 
 	renderFirstNote = () => {
@@ -58,6 +64,17 @@ class MainActivity extends React.Component {
 	}
 
 	render() {
+		const ListHeader = () => {
+			return(
+				<View style = {{flex: 1, height: 95, flexDirection: 'row', alignItems: 'flex-end'}}>
+					<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginLeft: 20, marginBottom: 10, flex: 1}}>
+						All Notes
+					</Text>
+					<SecondaryButton title = "Settings" withBorder = {true} color = {ColorScheme.primary} onPressFunction = {this.gotoSettings} />
+				</View> 
+			);
+		}
+
 		return(
 			<View style = {{flex:1}}>
 				<FlatList 
@@ -79,16 +96,6 @@ class MainActivity extends React.Component {
 			</View>
 		);
 	}
-}
-
-const ListHeader = () => {
-	return(
-		<View style = {{flex: 1, height: 95, justifyContent: 'flex-end', alignItems: 'center'}}>
-			<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginLeft: 20, marginBottom: 10}}>
-				All Notes
-			</Text>
-		</View> 
-	);
 }
 
 const ListFooter = () => {

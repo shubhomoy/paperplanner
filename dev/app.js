@@ -2,6 +2,7 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import MainActivity from './activities/MainActivity';
 import NoteActivity from './activities/NoteActivity';
+import SettingsActivity from './activities/SettingsActivity';
 import ViewNoteActivity from './activities/ViewNoteActivity';
 import { Scene, Router } from 'react-native-router-flux';
 import { createStore } from 'redux';
@@ -21,6 +22,7 @@ class App extends React.Component {
 						<Scene key = "mainActivity" component = {MainActivity} initial = {true}/>
 						<Scene key = "noteActivity" component = {NoteActivity}/>
 						<Scene key = "viewNoteActivity" component = {ViewNoteActivity} />
+						<Scene key = "settingsActivity" component = {SettingsActivity} />
 					</Scene>
 				</Router>
 			</Provider>
