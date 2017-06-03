@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, TouchableWithoutFeedback, Image, Dimensions, Text, FlatList } from 'react-native';
+import { View, TouchableWithoutFeedback, Image, Dimensions, Text, FlatList, Button } from 'react-native';
 import { ColorScheme } from '../css/style';
-import { Actions } from 'react-native-router-flux';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
@@ -9,12 +9,14 @@ import AppBar from '../components/AppBar';
 import EntityItem from '../components/EntityItem';
 import SearchBar from '../components/SearchBar';
 import Separator_1 from '../components/Separator_1';
+import { BoxShadow } from 'react-native-shadow';
 
 class MainActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.newNote = this.newNote.bind(this);
+		this.renderFirstNote = this.renderFirstNote.bind(this);
 	}
 
 	componentWillMount() {
@@ -29,6 +31,30 @@ class MainActivity extends React.Component {
 		Actions.noteActivity({
 			action: 'new'}
 		);
+	}
+
+	renderFirstNote = () => {
+		if(this.props.notes.length == 0) {
+			return(
+				<View style = {{position: 'absolute', height: '100%', backgroundColor: '#fff', width: '100%', top: 0}}>
+					<View style = {{flex: 1, alignItems: 'center', paddingTop: 50}}>
+						<Text style = {{fontSize: 20, padding: 20, color: ColorScheme.primary}}>Welcome to Paper!</Text>
+						<Text style = {{width: 150, textAlign: 'center', marginBottom: 80, fontSize: 15}}><Text style = {{fontWeight: 'bold', color: '#212121'}}>Tap</Text> on the plus button to add your first note</Text>
+						
+						<BoxShadow setting = {shadow}>
+						<TouchableWithoutFeedback onPress = {() => this.newNote()} useForeground = {true}>
+							
+								<View style = {[addBtn]}>
+									<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
+								</View>
+							
+						</TouchableWithoutFeedback>
+						</BoxShadow>
+					</View>
+				</View>
+			);
+		}
+		return null;
 	}
 
 	render() {
@@ -48,6 +74,8 @@ class MainActivity extends React.Component {
 						</View>
 					</TouchableWithoutFeedback>
 				<SearchBar />
+
+				{this.renderFirstNote()}
 			</View>
 		);
 	}
@@ -75,6 +103,19 @@ const addBtn = {
 	backgroundColor: ColorScheme.primary,
 	padding: 20,
 	borderRadius: 50
+}
+
+const shadow = {
+	width: 65,
+	height: 65,
+	color: '#dedede',
+	border: 10,
+	radius: 30,
+	opacity: 1,
+	x: 0,
+	y: 5,
+	style:{
+	}
 }
 
 function mapStateToProps(state) {

@@ -18,7 +18,7 @@ class App extends React.Component {
 			<Provider store = {store}>
 				<Router hideNavBar>
 					<Scene key = "root">
-						<Scene key = "mainActivity" component = {MainActivity} />
+						<Scene key = "mainActivity" component = {MainActivity} initial = {true}/>
 						<Scene key = "noteActivity" component = {NoteActivity}/>
 						<Scene key = "viewNoteActivity" component = {ViewNoteActivity} />
 					</Scene>

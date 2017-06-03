@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
 import realm from '../database';
+import moment from 'moment';
 
 class ViewNoteActivity extends React.Component {
 
@@ -51,6 +52,14 @@ class ViewNoteActivity extends React.Component {
 		return(
 			<View style = {{flex: 1}}>
 				<ScrollView>
+					<View style = {{flexDirection: 'row', marginTop: 20}}>
+						<Text style = {dateTitleStyle}>Created on:</Text>
+						<Text style = {dateStyle}>{moment(this.props.note.created_on).format('ddd Do MMM YYYY').toString()}</Text>
+					</View>
+					<View style = {{flexDirection: 'row'}}>
+						<Text style={dateTitleStyle}>Last updated:</Text>
+						<Text style = {dateStyle}>{moment(this.props.note.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
+					</View>
 					<Text style = {textStyle}>
 						{this.props.note.note_text}
 					</Text>
@@ -64,6 +73,16 @@ class ViewNoteActivity extends React.Component {
 			</View>
 		);
 	}
+}
+
+const dateTitleStyle = {
+	fontWeight: 'bold',
+	paddingLeft: 20,
+	fontSize: 15
+}
+
+const dateStyle = {
+	paddingLeft: 10
 }
 
 const textStyle = {
