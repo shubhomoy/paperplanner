@@ -13,10 +13,17 @@ class MainActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.newNote = this.newNote.bind(this);
 	}
 
 	componentWillMount() {
 		this.props.getNotes();
+	}
+
+	newNote = () => {
+		Actions.noteActivity({
+			action: 'new'}
+		);
 	}
 
 	render() {
@@ -31,7 +38,7 @@ class MainActivity extends React.Component {
 					ItemSeparatorComponent = {() => <Separator_1 />}/>
 
 				<View style = {{position: 'absolute', bottom: 16, right: 16}}>
-					<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress = {Actions.noteActivity}>
+					<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress = {() => this.newNote()}>
 						<View style = {addBtn}>
 							<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
 						</View>

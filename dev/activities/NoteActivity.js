@@ -17,23 +17,36 @@ class NoteActivity extends React.Component {
 		super(props);
 		
 		this.state = {
+			note: this.props.note,
 			noteText: ''
 		}
 		this.saveNote = this.saveNote.bind(this);
 	}
 
-	
+	componentDidMount() {
+		if(this.props.action === 'edit') {
+			this.setState({noteText: this.state.note.note_text});
+		}
+	}
 
 	saveNote = () => {
-		realm.write(() => {
-			let newNote = realm.create('Note', {
-				id: Services.getUniqueID(),
-				note_text: this.state.noteText,
-				created_on: new Date(),
-				updated_on: new Date()
+		if(this.props.action === 'new') {
+			realm.write(() => {
+				let newNote = realm.create('Note', {
+					id: Services.getUniqueID(),
+					note_text: this.state.noteText,
+					created_on: new Date(),
+					updated_on: new Date()
+				});
 			});
-			this.props.getNotes();
-		});
+		}else{
+			let note = realm.objectForPrimaryKey('Note', this.state.note.id);
+			realm.write(() => {
+				note.note_text = this.state.noteText;
+				note.updated_on = new Date();
+			});
+		}
+		this.props.getNotes();
 		Actions.pop();
 	}
 
@@ -50,6 +63,7 @@ class NoteActivity extends React.Component {
 						autoCapitalize="sentences"
 						onChangeText = {(text) => {this.setState({noteText: text})}}
 						underlineColorAndroid = 'transparent' 
+						value = {this.state.noteText}
 						placeholder = "Add a note"/>
 
 					<BoxShadow setting = {shadow}>

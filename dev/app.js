@@ -20,7 +20,7 @@ class App extends React.Component {
 					<Scene key = "root">
 						<Scene key = "mainActivity" component = {MainActivity} />
 						<Scene key = "noteActivity" component = {NoteActivity}/>
-						<Scene key = "viewNoteActivity" component = {ViewNoteActivity}/>
+						<Scene key = "viewNoteActivity" component = {ViewNoteActivity} />
 					</Scene>
 				</Router>
 			</Provider>

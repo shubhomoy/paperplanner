@@ -15,13 +15,14 @@ export default class PrimaryButton extends React.Component {
 }
 
 const container = {
-	flex: 1,
 	justifyContent: 'center',
 	alignItems: 'center',
 	backgroundColor: ColorScheme.primary,
 	padding: 5,
 	paddingLeft: 15,
 	paddingRight: 15,
+	borderWidth: 2,
+	borderColor: ColorScheme.primary,
 	borderRadius: 3,
 	margin: 5
 }

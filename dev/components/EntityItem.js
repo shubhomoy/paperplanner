@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Text, View, Image, TouchableNativeFeedback, Alert } from 'react-native';
+import { Text, View, Image, TouchableNativeFeedback, Alert, TouchableHighlight } from 'react-native';
 import { ColorScheme } from '../css/style';
 import realm from '../database';
 import ImageButton from './ImageButton';
@@ -17,7 +17,7 @@ class EntityItem extends React.Component {
 	}
 
 	deleteEntity = () => {
-		Alert.alert('Delete Entity', 'Are you sure you want to delete?',
+		Alert.alert('Delete Note', 'Are you sure you want to delete?',
 			[
 				{
 					text: 'No'
@@ -37,17 +37,21 @@ class EntityItem extends React.Component {
 	}
 
 	openNote = () => {
-
+		Actions.viewNoteActivity({
+			note: this.props.note
+		});
 	}
 
 	render() {
 		return(
-			<View style = {itemStyle} onPress = {() => this.openNote()}>
-				<Text style = {itemTextStyle}>{this.props.note.note_text}</Text>	
-				<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
-					<ImageButton onPressFunction={this.deleteEntity} image = {require('../images/remove.png')}/>
+			<TouchableHighlight onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
+				<View style = {itemStyle}>
+					<Text style = {itemTextStyle}>{this.props.note.note_text}</Text>	
+					<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
+						<ImageButton onPressFunction={this.deleteEntity} image = {require('../images/remove.png')}/>
+					</View>
 				</View>
-			</View>
+			</TouchableHighlight>
 		);
 	}
 }
