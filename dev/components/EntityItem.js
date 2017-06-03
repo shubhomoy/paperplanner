@@ -46,7 +46,7 @@ class EntityItem extends React.Component {
 		return(
 			<TouchableHighlight onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
 				<View style = {itemStyle}>
-					<Text style = {itemTextStyle}>{this.props.note.note_text}</Text>	
+					<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.props.note.note_text}</Text>	
 					<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
 						<ImageButton onPressFunction={this.deleteEntity} image = {require('../images/remove.png')}/>
 					</View>

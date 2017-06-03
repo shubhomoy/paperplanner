@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableNativeFeedback, Image, Dimensions, Text, FlatList } from 'react-native';
+import { View, TouchableWithoutFeedback, Image, Dimensions, Text, FlatList } from 'react-native';
 import { ColorScheme } from '../css/style';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
@@ -20,6 +20,10 @@ class MainActivity extends React.Component {
 		this.props.getNotes();
 	}
 
+	componentWillUpdate(nextProps, nextState) {
+		this.refs.list.scrollToOffset({x: 0, y: 0, animated: true})
+	}
+
 	newNote = () => {
 		Actions.noteActivity({
 			action: 'new'}
@@ -32,18 +36,17 @@ class MainActivity extends React.Component {
 				<AppBar title = "Notes" backButton = {false}/>
 
 				<FlatList 
+					ref = "list"
 					data = {this.props.notes}
 					renderItem = {({item, index}) => <EntityItem index = {index} note = {item}/>}
 					keyExtractor={(item, index) => item.id}
 					ItemSeparatorComponent = {() => <Separator_1 />}/>
 
-				<View style = {{position: 'absolute', bottom: 16, right: 16}}>
-					<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress = {() => this.newNote()}>
-						<View style = {addBtn}>
+					<TouchableWithoutFeedback onPress = {() => this.newNote()} useForeground = {true}>
+						<View style = {[addBtn, {flex: 1, flexDirection: 'row', position: 'absolute', bottom: 16, right: 16}]}>
 							<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
 						</View>
-					</TouchableNativeFeedback>
-				</View>
+					</TouchableWithoutFeedback>
 
 			</View>
 		);
