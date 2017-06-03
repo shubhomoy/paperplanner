@@ -7,10 +7,11 @@ export const ColorScheme = {
 	redDark: '#B71C1C'
 }
 
-export const styles = StyleSheet.create({
-	inputArea: {
-		flex: 1,
-		margin: 20,
-		padding: 10
+export const styles = {
+	pageTitle: {
+		fontWeight: 'bold',
+		color: ColorScheme.primary,
+		fontSize: 25,
+		marginLeft: 5
 	}
-});
+};

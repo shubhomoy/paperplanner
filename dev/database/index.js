@@ -1,9 +1,9 @@
 import Realm from 'realm';
-import Event from './event';
-import Note from './note';
+import Event from './schemas/event';
+import Note from './schemas/note';
 
 let realm = new Realm({
-	schema: [Event, Note],
+	schema: [Note],
 	schemaVersion: 1,
 	migration: (oldRealm, newRealm) => {
 

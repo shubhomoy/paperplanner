@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import moment from 'moment';
-import realm from '../database/schemas';
+import realm from '../database';
 import { Actions } from 'react-native-router-flux';
 
 class EventItem extends React.Component {

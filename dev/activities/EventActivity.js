@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { ColorScheme } from '../css/style';
 import { Text, View, TouchableWithoutFeedback, Alert, TouchableNativeFeedback, Image, Modal, Button, FlatList } from 'react-native';
-import realm from '../database/schemas';
+import realm from '../database';
 import EntityItem from '../components/EntityItem';
 import Separator_1 from '../components/Separator_1';
 import { Actions } from 'react-native-router-flux';
@@ -75,7 +75,7 @@ class EventActivity extends React.Component {
 					ref = "list"
 					style = {{marginTop: 30}}
 					data = {this.state.notes}
-					renderItem = {({item}) => <EntityItem text = {item.description} createdOn = {item.created_on}/>}
+					renderItem = {({item, index}) => <EntityItem index = {index} event = {this.state.event} text = {item.description} createdOn = {item.created_on}/>}
 					keyExtractor={(item, index) => item.id}
 					ItemSeparatorComponent = {() => <Separator_1 />}/>
 

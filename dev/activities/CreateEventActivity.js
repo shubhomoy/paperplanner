@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableNativeFeedback, Image, Dimensions, FlatList } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import {styles, ColorScheme} from '../css/style';
-import realm from '../database/schemas';
+import realm from '../database';
 import moment from 'moment';
 import Services from '../utils';
 import { BoxShadow } from 'react-native-shadow';

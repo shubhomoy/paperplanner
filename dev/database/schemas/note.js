@@ -4,7 +4,7 @@ Note.schema = {
 	primaryKey: 'id',
 	properties: {
 		id: 'string',
-		description: 'string',
+		note_text: 'string',
 		created_on: 'date',
 		updated_on: 'date'
 	}
