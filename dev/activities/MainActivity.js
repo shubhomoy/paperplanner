@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
 import AppBar from '../components/AppBar';
 import EntityItem from '../components/EntityItem';
+import SearchBar from '../components/SearchBar';
 import Separator_1 from '../components/Separator_1';
 
 class MainActivity extends React.Component {
@@ -33,24 +34,41 @@ class MainActivity extends React.Component {
 	render() {
 		return(
 			<View style = {{flex:1}}>
-				<AppBar title = "Notes" backButton = {false}/>
-
 				<FlatList 
 					ref = "list"
 					data = {this.props.notes}
 					renderItem = {({item, index}) => <EntityItem index = {index} note = {item}/>}
 					keyExtractor={(item, index) => item.id}
+					ListHeaderComponent = {ListHeader}
+					ListFooterComponent = {ListFooter}
 					ItemSeparatorComponent = {() => <Separator_1 />}/>
-
 					<TouchableWithoutFeedback onPress = {() => this.newNote()} useForeground = {true}>
 						<View style = {[addBtn, {flex: 1, flexDirection: 'row', position: 'absolute', bottom: 16, right: 16}]}>
 							<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
 						</View>
 					</TouchableWithoutFeedback>
-
+				<SearchBar />
 			</View>
 		);
 	}
+}
+
+const ListHeader = () => {
+	return(
+		<View style = {{flex: 1, height: 95, justifyContent: 'flex-end', alignItems: 'center'}}>
+			<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginLeft: 20, marginBottom: 10}}>
+				All Notes
+			</Text>
+		</View> 
+	);
+}
+
+const ListFooter = () => {
+	return(
+		<View style = {{flex: 1, height: 95, backgroundColor: '#fff'}}>
+			
+		</View> 
+	);
 }
 
 const addBtn = {

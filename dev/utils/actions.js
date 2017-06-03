@@ -1,14 +1,13 @@
 const ACTIONS = {
-	saveNote: (note) => {
-		return {
-			type: 'SAVE_NOTE',
-			data: note
-		}
-	},
-
 	getNotes: () => {
 		return {
 			type: 'GET_NOTES'
+		}
+	},
+	searchNotes: (searchText) => {
+		return {
+			type: 'SEARCH',
+			data: searchText
 		}
 	}
 }

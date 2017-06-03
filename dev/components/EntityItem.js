@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Text, View, Image, TouchableNativeFeedback, Alert, TouchableHighlight } from 'react-native';
+import { Text, View, Image, TouchableNativeFeedback, Alert, TouchableHighlight, Clipboard, Share } from 'react-native';
 import { ColorScheme } from '../css/style';
 import realm from '../database';
 import ImageButton from './ImageButton';
@@ -14,6 +14,8 @@ class EntityItem extends React.Component {
 		super(props);
 		this.deleteEntity = this.deleteEntity.bind(this);
 		this.openNote = this.openNote.bind(this);
+		this.copyNote = this.copyNote.bind(this);
+		this.shareNote = this.shareNote.bind(this);
 	}
 
 	deleteEntity = () => {
@@ -36,9 +38,19 @@ class EntityItem extends React.Component {
 		);
 	}
 
+	copyNote = () => {
+		Clipboard.setString(this.props.note.note_text);
+	}
+
 	openNote = () => {
 		Actions.viewNoteActivity({
 			note: this.props.note
+		});
+	}
+
+	shareNote = () => {
+		Share.share({
+			message: this.props.note.note_text
 		});
 	}
 
@@ -49,6 +61,8 @@ class EntityItem extends React.Component {
 					<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.props.note.note_text}</Text>	
 					<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
 						<ImageButton onPressFunction={this.deleteEntity} image = {require('../images/remove.png')}/>
+						<ImageButton onPressFunction={this.copyNote} image = {require('../images/copy.png')}/>
+						<ImageButton onPressFunction={this.shareNote} image = {require('../images/share.png')}/>
 					</View>
 				</View>
 			</TouchableHighlight>
