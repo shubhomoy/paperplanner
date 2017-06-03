@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Button, TouchableNativeFeedback, Image, Dimensions } from 'react-native';
+import { Text, View, TextInput, Button, TouchableNativeFeedback, Image, Dimensions, Alert, BackHandler } from 'react-native';
 import { ColorScheme, styles } from '../css/style';
 import realm from '../database';
 import Services from '../utils';
@@ -21,12 +21,53 @@ class NoteActivity extends React.Component {
 			noteText: ''
 		}
 		this.saveNote = this.saveNote.bind(this);
+		this.onBack = this.onBack.bind(this);
+		this.promptSave = this.promptSave.bind(this);
 	}
 
 	componentDidMount() {
 		if(this.props.action === 'edit') {
 			this.setState({noteText: this.state.note.note_text});
 		}
+		BackHandler.addEventListener('hardwareBackPressed', this.onBack);
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPressed', this.onBack)
+	}
+
+	onBack = () => {
+		if(this.props.action === 'new') {
+			if(this.state.noteText.trim().length > 0) {
+				this.promptSave();
+			}else{
+				Actions.pop();
+			}
+		}else{
+			if(this.state.note.note_text != this.state.noteText && this.state.noteText.trim().length > 0) {
+				this.promptSave();
+			}else{
+				Actions.pop();	
+			}
+		}
+		return true;
+	}
+
+	promptSave = () => {
+		Alert.alert('Save Note?', 'Do you want to save this note?', [
+				{
+					text: 'No',
+					onPress: () => {
+						Actions.pop();
+					}
+				},
+				{
+					text: 'Save',
+					onPress: () => {
+						this.saveNote();
+					}
+				}
+			])
 	}
 
 	saveNote = () => {
@@ -53,7 +94,7 @@ class NoteActivity extends React.Component {
 	render() {
 		return (
 			<View style = {{flex: 1}}>
-				<AppBar title = "Note" backButton = {true}/>
+				<AppBar title = "Note" backButton = {true} onBackListener = {this.onBack}/>
 				<View style = {{flex: 1, backgroundColor: '#fff'}}>
 					<TextInput 
 						multiline = {true} 
