@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, TouchableNativeFeedback, Image, Dimensions, Text } from 'react-native';
+import { View, TouchableNativeFeedback, Image, Dimensions, Text, FlatList } from 'react-native';
 import { ColorScheme } from '../css/style';
-import { BoxShadow } from 'react-native-shadow';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
 import AppBar from '../components/AppBar';
+import EntityItem from '../components/EntityItem';
+import Separator_1 from '../components/Separator_1';
 
 class MainActivity extends React.Component {
 
@@ -23,11 +24,11 @@ class MainActivity extends React.Component {
 			<View style = {{flex:1}}>
 				<AppBar title = "Notes" backButton = {false}/>
 
-				{this.props.notes.map((note, index) => {
-					return(
-						<Text key = {index}>{note.note_text}</Text>
-					);
-				})}
+				<FlatList 
+					data = {this.props.notes}
+					renderItem = {({item, index}) => <EntityItem index = {index} note = {item}/>}
+					keyExtractor={(item, index) => item.id}
+					ItemSeparatorComponent = {() => <Separator_1 />}/>
 
 				<View style = {{position: 'absolute', bottom: 16, right: 16}}>
 					<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress = {Actions.noteActivity}>

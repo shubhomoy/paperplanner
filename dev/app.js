@@ -1,10 +1,8 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import MainActivity from './activities/MainActivity';
-import EventListActivity from './activities/EventListActivity';
-import CreateEventActivity from './activities/CreateEventActivity';
-import EventActivity from './activities/EventActivity';
 import NoteActivity from './activities/NoteActivity';
+import ViewNoteActivity from './activities/ViewNoteActivity';
 import { Scene, Router } from 'react-native-router-flux';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -21,10 +19,8 @@ class App extends React.Component {
 				<Router hideNavBar>
 					<Scene key = "root">
 						<Scene key = "mainActivity" component = {MainActivity} />
-						<Scene key = "eventListActivity" component = {EventListActivity} title = "Events"/>
-						<Scene key = "createEventActivity" component = {CreateEventActivity}/>
-						<Scene key = "eventActivity" component = {EventActivity} hideNavBar/>
-						<Scene key = "noteActivity" component = {NoteActivity} title = "Add Note"/>
+						<Scene key = "noteActivity" component = {NoteActivity}/>
+						<Scene key = "viewNoteActivity" component = {ViewNoteActivity}/>
 					</Scene>
 				</Router>
 			</Provider>
