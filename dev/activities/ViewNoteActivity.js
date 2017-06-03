@@ -67,7 +67,7 @@ class ViewNoteActivity extends React.Component {
 				<BoxShadow setting = {shadow}>
 					<View style = {controlsContainer}>
 						<SecondaryButton title = "Delete" withBorder = {true} color = {ColorScheme.redDark} onPressFunction = {this.deleteEntity}/>
-						<PrimaryButton title = "Edit" onPressFunction = {this.editNote}/>
+						<PrimaryButton title = "Edit" onPressFunction = {this.editNote} color = {ColorScheme.primary}/>
 					</View>
 				</BoxShadow>
 			</View>

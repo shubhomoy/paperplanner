@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableHighlight, Image } from 'react-native';
 import { ColorScheme } from '../css/style';
+import { Actions } from 'react-native-router-flux';
 import AppBar from '../components/AppBar';
 
 class SettingsActivity extends React.Component {
@@ -27,7 +28,7 @@ class SettingsActivity extends React.Component {
 							<View style = {sepStyle}/>
 						</View>
 					</TouchableHighlight>
-					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null}>
+					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null} onPress = {Actions.createPasswordActivity}>
 						<View>
 							<View style = {listItemStyle}>
 								<Image source = {require('../images/key.png')} style = {iconStyle}/>

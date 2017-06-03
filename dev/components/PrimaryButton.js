@@ -4,6 +4,18 @@ import { ColorScheme, styles } from '../css/style';
 
 export default class PrimaryButton extends React.Component {
 	render() {
+		const container = {
+			justifyContent: 'center',
+			alignItems: 'center',
+			backgroundColor: this.props.color,
+			padding: 5,
+			paddingLeft: 15,
+			paddingRight: 15,
+			borderWidth: 2,
+			borderColor: this.props.color,
+			borderRadius: 3,
+			margin: 5
+		}
 		return(
 			<TouchableNativeFeedback onPress = {() => this.props.onPressFunction()} background = {TouchableNativeFeedback.SelectableBackground()}>
 				<View style = {container}>
@@ -12,19 +24,6 @@ export default class PrimaryButton extends React.Component {
 			</TouchableNativeFeedback>
 		);
 	}
-}
-
-const container = {
-	justifyContent: 'center',
-	alignItems: 'center',
-	backgroundColor: ColorScheme.primary,
-	padding: 5,
-	paddingLeft: 15,
-	paddingRight: 15,
-	borderWidth: 2,
-	borderColor: ColorScheme.primary,
-	borderRadius: 3,
-	margin: 5
 }
 
 const btnText = {

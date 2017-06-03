@@ -4,7 +4,9 @@ export const ColorScheme = {
 	primary: '#2196F3',
 	primaryDark: '#141B41',
 	red: '#F44336',
-	redDark: '#B71C1C'
+	redDark: '#B71C1C',
+	green: '#4CAF50',
+	text: '#212121'
 }
 
 export const styles = {

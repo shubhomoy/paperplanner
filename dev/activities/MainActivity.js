@@ -66,7 +66,7 @@ class MainActivity extends React.Component {
 	render() {
 		const ListHeader = () => {
 			return(
-				<View style = {{flex: 1, height: 95, flexDirection: 'row', alignItems: 'flex-end'}}>
+				<View style = {{flex: 1, height: 95, flexDirection: 'row', alignItems: 'flex-end', paddingRight: 15}}>
 					<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginLeft: 20, marginBottom: 10, flex: 1}}>
 						All Notes
 					</Text>

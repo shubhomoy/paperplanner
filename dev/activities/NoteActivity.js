@@ -109,7 +109,7 @@ class NoteActivity extends React.Component {
 
 					<BoxShadow setting = {shadow}>
 						<View style = {controlsContainer}>
-							<PrimaryButton title = "Save" onPressFunction = {this.saveNote}/>
+							<PrimaryButton title = "Save" onPressFunction = {this.saveNote} color = {ColorScheme.primary}/>
 						</View>
 					</BoxShadow>
 				</View>
