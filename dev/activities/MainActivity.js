@@ -100,7 +100,7 @@ class MainActivity extends React.Component {
 
 const ListFooter = () => {
 	return(
-		<View style = {{flex: 1, height: 95, backgroundColor: '#fff'}}>
+		<View style = {{flex: 1, height: 150, backgroundColor: '#fff'}}>
 			
 		</View> 
 	);

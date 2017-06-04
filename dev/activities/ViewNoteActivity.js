@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableNativeFeedback, ScrollView, Dimensions, Alert } from 'react-native';
+import { View, Text, TouchableNativeFeedback, ScrollView, Dimensions, Alert, TextInput, AsyncStorage } from 'react-native';
 import { BoxShadow } from 'react-native-shadow';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
@@ -15,8 +15,36 @@ class ViewNoteActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			typedCorrectPassword: false,
+			password: '',
+			incorrectPassword: false
+		}
 		this.deleteEntity = this.deleteEntity.bind(this);
 		this.editNote = this.editNote.bind(this);
+		this.viewLockedNote = this.viewLockedNote.bind(this);
+		this.showIncorrectPassword = this.showIncorrectPassword.bind(this);
+	}
+
+	viewLockedNote = () => {
+		AsyncStorage.getItem('paperStore').then((obj) => {
+			if(obj) {
+				obj = JSON.parse(obj);
+				if(obj.is_password_set) {
+					if(this.state.password === obj.password) {
+						this.setState({
+							typedCorrectPassword: true,
+							incorrectPassword: false
+						});
+					}else{
+						this.setState({
+							typedCorrectPassword: false,
+							incorrectPassword: true
+						});
+					}
+				}
+			}else{}
+		});
 	}
 
 	deleteEntity = () => {
@@ -48,30 +76,70 @@ class ViewNoteActivity extends React.Component {
 		});
 	}
 
+	showIncorrectPassword = () => {
+		if(this.state.incorrectPassword) {
+			return(
+				<Text style = {{color: ColorScheme.red}}>Incorrect Password</Text>
+			);
+		}else{
+			return null;
+		}
+	}
+
 	render() {
-		return(
-			<View style = {{flex: 1}}>
-				<ScrollView>
-					<View style = {{flexDirection: 'row', marginTop: 20}}>
-						<Text style = {dateTitleStyle}>Created on:</Text>
-						<Text style = {dateStyle}>{moment(this.props.note.created_on).format('ddd Do MMM YYYY').toString()}</Text>
+		if(this.props.note.is_locked && !this.state.typedCorrectPassword) {
+			return(
+				<View style = {{flex: 1}}>
+					<View style = {{width: '100%', height: 5, backgroundColor: ColorScheme.primary}}/>
+					<View style = {{flex: 1, alignItems: 'center'}}>
+						<View style = {{alignItems: 'center'}}>
+							<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Note is Locked</Text>
+							<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}>Enter password to view the note</Text>
+							<BoxShadow setting = {inputShadow}>
+								<TextInput 
+									onChangeText = {(text) => {
+										this.setState({password: text})
+									}}
+									style = {inputStyle}
+									maxLength = {20}
+									underlineColorAndroid = 'transparent'
+									secureTextEntry = {true}
+									placeholder = "Enter Password"/>
+							</BoxShadow>
+							{this.showIncorrectPassword()}
+							<View style = {{flexDirection: 'row'}}>
+								<SecondaryButton title = "Dismiss" onPressFunction = {Actions.pop} withBorder = {true} color = {ColorScheme.text}/>
+								<PrimaryButton title = "View Note" color = {ColorScheme.primary} onPressFunction = {this.viewLockedNote}/>
+							</View>
+						</View>
 					</View>
-					<View style = {{flexDirection: 'row'}}>
-						<Text style={dateTitleStyle}>Last updated:</Text>
-						<Text style = {dateStyle}>{moment(this.props.note.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
-					</View>
-					<Text style = {textStyle}>
-						{this.props.note.note_text}
-					</Text>
-				</ScrollView>
-				<BoxShadow setting = {shadow}>
-					<View style = {controlsContainer}>
-						<SecondaryButton title = "Delete" withBorder = {true} color = {ColorScheme.redDark} onPressFunction = {this.deleteEntity}/>
-						<PrimaryButton title = "Edit" onPressFunction = {this.editNote} color = {ColorScheme.primary}/>
-					</View>
-				</BoxShadow>
-			</View>
-		);
+				</View>
+			);
+		}else{
+			return(
+				<View style = {{flex: 1}}>
+					<ScrollView>
+						<View style = {{flexDirection: 'row', marginTop: 20}}>
+							<Text style = {dateTitleStyle}>Created on:</Text>
+							<Text style = {dateStyle}>{moment(this.props.note.created_on).format('ddd Do MMM YYYY').toString()}</Text>
+						</View>
+						<View style = {{flexDirection: 'row'}}>
+							<Text style={dateTitleStyle}>Last updated:</Text>
+							<Text style = {dateStyle}>{moment(this.props.note.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
+						</View>
+						<Text style = {textStyle}>
+							{this.props.note.note_text}
+						</Text>
+					</ScrollView>
+					<BoxShadow setting = {shadow}>
+						<View style = {controlsContainer}>
+							<SecondaryButton title = "Delete" withBorder = {true} color = {ColorScheme.redDark} onPressFunction = {this.deleteEntity}/>
+							<PrimaryButton title = "Edit" onPressFunction = {this.editNote} color = {ColorScheme.primary}/>
+						</View>
+					</BoxShadow>
+				</View>
+			);
+		}
 	}
 }
 
@@ -111,6 +179,28 @@ const shadow = {
 	style:{
 		
 	}
+}
+
+const inputShadow = {
+	width: Dimensions.get('window').width/1.5,
+	height: 50,
+	color: '#dedede',
+	border: 20,
+	radius: 25,
+	opacity: 0.3,
+	x: 0,
+	y: 0,
+	style:{
+		marginBottom: 20
+	}
+}
+
+const inputStyle = {
+	textAlign: 'center',
+	fontSize: 20,
+	borderRadius: 5,
+	backgroundColor: '#fff',
+	width: Dimensions.get('window').width/1.5
 }
 
 function mapStateToProps(state) {
