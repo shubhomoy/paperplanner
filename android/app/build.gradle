@@ -126,6 +126,10 @@ android {
 }
 
 dependencies {
+    compile(project(':react-native-google-signin')) {
+	exclude group: "com.google.android.gms"
+    }
+    compile 'com.google.android.gms:play-services-auth:9.2.1'
     compile project(':react-native-svg')
     compile project(':realm')
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -139,3 +143,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+apply plugin: 'com.google.gms.google-services'

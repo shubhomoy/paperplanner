@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "3377171971",
+    "firebase_url": "https://engaged-shade-128118.firebaseio.com",
+    "project_id": "engaged-shade-128118",
+    "storage_bucket": "engaged-shade-128118.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3377171971:android:27c287e093e7648e",
+        "android_client_info": {
+          "package_name": "com.paperplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3377171971-r238ga4jsh4oppcnq8bomj3q527hju0b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.paperplanner",
+            "certificate_hash": "0843172e8ac489bd0708c812c37871bc8320690c"
+          }
+        },
+        {
+          "client_id": "3377171971-b7g54ea8u20dhgg2mcvlabodnterc82i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEP_cXGGs1YB3_fV81FqTOUEGZsR1Zb5s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3377171971-b7g54ea8u20dhgg2mcvlabodnterc82i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

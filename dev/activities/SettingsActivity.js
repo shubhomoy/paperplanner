@@ -1,16 +1,60 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableHighlight, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableHighlight, Image, PermissionsAndroid } from 'react-native';
 import { ColorScheme } from '../css/style';
 import { Actions } from 'react-native-router-flux';
 import AppBar from '../components/AppBar';
+import {GoogleSignin} from 'react-native-google-signin';
+import realm from '../database';
+
+GoogleSignin.configure({
+	scopes: ["https://www.googleapis.com/auth/drive.appdata"], // what API you want to access on behalf of the user, default is email and profile
+  	forceConsentPrompt: true
+})
+.then(() => {
+
+});
+
 
 class SettingsActivity extends React.Component {
+	constructor(props) {
+		super(props);
+		this.backupNotes = this.backupNotes.bind(this);
+	}
+
+	backupNotes = () => {
+		let app = {
+			notes: []
+		}
+		realm.objects('Note').sorted('updated_on', true).map((note) => {
+			let newNote = {
+				id: note.id,
+				title: note.title,
+				note_text: note.note_text,
+				is_locked: note.is_locked,
+				created_on: note.created_on,
+				updated_on: note.updated_on
+			};
+			app.notes.push(newNote);
+		});
+		console.warn(JSON.stringify(app));
+		// GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+		// 	GoogleSignin.signIn().then((user) => {
+		//     	console.warn(JSON.stringify(user));
+		//  	})
+		//     .catch((err) => {
+		//     	console.warn('WRONG SIGNIN', err);
+		//     }).done();
+		// }).catch((err) => {
+		// 	console.warn("Play services error", err.code, err.message);
+		// })
+	}
+
 	render() {
 		return(
 			<View style = {{flex: 1}}>
 				<AppBar title = "Settings" backButton/>
 				<ScrollView>
-					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null}>
+					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null} onPress = {() => this.backupNotes()}>
 						<View>
 							<View style = {listItemStyle}>
 								<Image source = {require('../images/backup.png')} style = {iconStyle}/>

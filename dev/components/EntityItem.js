@@ -168,7 +168,7 @@ class EntityItem extends React.Component {
 		if(this.state.isLocked) {
 			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/locked.png')}/>
 		}else
-			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/key.png')}/>
+			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/key.png')} style = {{marginLeft: 0, paddingLeft: 0}}/>
 	}
 
 	showError = () => {
