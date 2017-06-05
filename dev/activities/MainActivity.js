@@ -16,9 +16,6 @@ class MainActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			welcomeNoteShown: false
-		}
 		this.newNote = this.newNote.bind(this);
 		this.gotoSettings = this.gotoSettings.bind(this);
 		this.renderFirstNote = this.renderFirstNote.bind(this);
@@ -30,6 +27,10 @@ class MainActivity extends React.Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		this.refs.list.scrollToOffset({x: 0, y: 0, animated: true})
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+
 	}
 
 	newNote = () => {
@@ -103,7 +104,7 @@ class MainActivity extends React.Component {
 
 const ListFooter = () => {
 	return(
-		<View style = {{flex: 1, height: 150, backgroundColor: '#fff'}}>
+		<View style = {{flex: 1, height: 200, backgroundColor: '#fff'}}>
 			
 		</View> 
 	);

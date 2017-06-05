@@ -6,7 +6,8 @@ export const ColorScheme = {
 	red: '#F44336',
 	redDark: '#B71C1C',
 	green: '#4CAF50',
-	text: '#212121'
+	text: '#212121',
+	deepYellow: '#F57F17'
 }
 
 export const styles = {

@@ -20,7 +20,7 @@ class EntityItem extends React.Component {
 			title: this.props.note.title,
 			unlockSetup: false,
 			typedPassword: '',
-			incorrectTypedPassword: false
+			errorText: ''
 		}
 		this.lockNote = this.lockNote.bind(this);
 		this.unlockNote = this.unlockNote.bind(this);
@@ -30,7 +30,7 @@ class EntityItem extends React.Component {
 		this.shareNote = this.shareNote.bind(this);
 		this.handleLock = this.handleLock.bind(this);
 		this.renderLock = this.renderLock.bind(this);
-		this.showIncorrectPassword = this.showIncorrectPassword.bind(this);
+		this.showError = this.showError.bind(this);
 	}
 
 	unlockNote = () => {
@@ -46,11 +46,13 @@ class EntityItem extends React.Component {
 						this.setState({
 							isLocked: false,
 							unlockSetup: false,
-							incorrectTypedPassword: false
+							title: '',
+							typedPassword: '',
+							errorText: ''
 						});
 					}else{
 						this.setState({
-							incorrectTypedPassword: true
+							errorText: 'Incorrect Password!'
 						})
 					}		
 				}
@@ -59,15 +61,23 @@ class EntityItem extends React.Component {
 	}
 
 	lockNote = () => {
-		realm.write(() => {
-			this.props.note.is_locked = true,
-			this.props.note.title = this.state.title
-		});
-		this.setState({
-			isLocked: true,
-			titleSetup: false,
-			incorrectTypedPassword: false
-		});
+		if(this.state.title.trim().length > 0) {
+			realm.write(() => {
+				this.props.note.is_locked = true,
+				this.props.note.title = this.state.title
+			});
+			this.setState({
+				isLocked: true,
+				titleSetup: false,
+				title: '',
+				typedPassword: '',
+				errorText: ''
+			});
+		}else{
+			this.setState({
+				errorText: 'Enter title'
+			})
+		}
 	}
 
 	handleLock = () => {
@@ -146,9 +156,9 @@ class EntityItem extends React.Component {
 			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/key.png')}/>
 	}
 
-	showIncorrectPassword = () => {
-		if(this.state.incorrectTypedPassword) {
-			return <Text style = {{fontSize: 17, color: ColorScheme.red, paddingLeft: 20, paddingRight: 20}}>Incorrect password!</Text>
+	showError = () => {
+		if(this.state.errorText.trim().length > 0) {
+			return <Text style = {{fontSize: 17, color: ColorScheme.red, paddingLeft: 20, paddingRight: 20}}>{this.state.errorText}</Text>
 		}else{
 			return null;
 		}
@@ -162,10 +172,12 @@ class EntityItem extends React.Component {
 					<TextInput 
 						onChangeText = {(text) => this.setState({title: text})}
 						underlineColorAndroid = 'transparent'
+						maxLength = {50}
 						style = {{width: Dimensions.get('window').width/2, textAlign: 'center', fontSize: 20, borderWidth: 0.5, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, marginTop: 10, borderRadius: 3}}
 						placeholder = "Enter title"/>
+					{this.showError()}
 					<View style = {{flexDirection: 'row'}}>
-						<SecondaryButton title = "Dismiss" color = {ColorScheme.text} withBorder = {true} onPressFunction = {() => {this.setState({titleSetup: false})}}/>
+						<SecondaryButton title = "Dismiss" color = {ColorScheme.text} withBorder = {true} onPressFunction = {() => {this.setState({titleSetup: false, errorText: ''})}}/>
 						<PrimaryButton title = "Done" color = {ColorScheme.primary} onPressFunction = {this.lockNote}/>
 					</View>
 				</View>
@@ -180,16 +192,32 @@ class EntityItem extends React.Component {
 						onChangeText = {(text) => this.setState({typedPassword: text})}
 						style = {{width: Dimensions.get('window').width/2, textAlign: 'center', fontSize: 20, borderWidth: 0.5, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, marginTop: 10, borderRadius: 3}}
 						placeholder = "Enter password"/>
-					{this.showIncorrectPassword()}
+					{this.showError()}
 					<View style = {{flexDirection: 'row'}}>
-						<SecondaryButton title = "Dismiss" color = {ColorScheme.text} withBorder = {true} onPressFunction = {() => {this.setState({unlockSetup: false})}}/>
+						<SecondaryButton title = "Dismiss" color = {ColorScheme.text} withBorder = {true} onPressFunction = {() => {this.setState({unlockSetup: false, errorText: ''})}}/>
 						<PrimaryButton title = "Unlock" color = {ColorScheme.primary} onPressFunction = {this.unlockNote}/>
 					</View>
 				</View>
 			)
+		}else if(this.state.isLocked) {
+			return(
+				<View>
+					<TouchableHighlight onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
+						<View style = {itemStyle}>
+							<View style = {{flexDirection: 'row', alignItems: 'center'}}>
+								{this.renderLock()}
+								<Text style = {[itemTextStyle, {fontWeight: 'bold'}]} ellipsizeMode = "tail" numberOfLines = {10}>{this.props.note.title}</Text>	
+							</View>
+							<View style = {{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+								<SecondaryButton title = "Unlock" color = {ColorScheme.deepYellow} withBorder = {true} onPressFunction = {this.handleLock}/>
+							</View>
+						</View>
+					</TouchableHighlight>
+				</View>
+			);
 		}else{
 			return(
-				<TouchableHighlight onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
+				<TouchableHighlight ref = "item" onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
 					<View style = {itemStyle}>
 						<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.state.isLocked ? this.props.note.title : this.props.note.note_text}</Text>	
 						<View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 30}}>

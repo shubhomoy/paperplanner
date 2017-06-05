@@ -2,7 +2,8 @@ import realm from '../../database';
 
 let initialState = {
 	isSearching: false,
-	items: []
+	items: [],
+	activeNote: null,
 }
 
 export default (state = initialState, action) => {
