@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Text, View, Image, TouchableNativeFeedback, Alert, TouchableHighlight, Clipboard, Share, AsyncStorage, TextInput, Dimensions } from 'react-native';
+import { Text, View, Image, TouchableNativeFeedback, Alert, Animated, TouchableHighlight, Clipboard, Share, AsyncStorage, TextInput, Dimensions } from 'react-native';
 import { ColorScheme } from '../css/style';
 import realm from '../database';
 import ImageButton from './ImageButton';
@@ -20,7 +20,8 @@ class EntityItem extends React.Component {
 			title: this.props.note.title,
 			unlockSetup: false,
 			typedPassword: '',
-			errorText: ''
+			errorText: '',
+			copyAnim: new Animated.Value(0)
 		}
 		this.lockNote = this.lockNote.bind(this);
 		this.unlockNote = this.unlockNote.bind(this);
@@ -133,7 +134,21 @@ class EntityItem extends React.Component {
 		);
 	}
 
+	contract = (finalValue) => {
+		Animated.timing(this.state.copyAnim, {
+			toValue: finalValue,
+			delay: 2000
+		}).start();	
+	}
+
+	expand = (finalValue) => {
+		Animated.timing(this.state.copyAnim, {
+			toValue: finalValue
+		}).start(() => this.contract(0));	
+	}
+
 	copyNote = () => {
+		this.expand(20);
 		Clipboard.setString(this.props.note.note_text);
 	}
 
@@ -218,16 +233,21 @@ class EntityItem extends React.Component {
 		}else{
 			return(
 				<TouchableHighlight ref = "item" onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
-					<View style = {itemStyle}>
-						<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.state.isLocked ? this.props.note.title : this.props.note.note_text}</Text>	
-						<View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-							{this.renderLock()}
-							<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
-								<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.deleteEntity} image = {require('../images/remove.png')}/>
-								<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.copyNote} image = {require('../images/copy.png')}/>
-								<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.shareNote} image = {require('../images/share.png')}/>
+					<View>
+						<View style = {itemStyle}>
+							<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.state.isLocked ? this.props.note.title : this.props.note.note_text}</Text>	
+							<View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
+								{this.renderLock()}
+								<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
+									<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.deleteEntity} image = {require('../images/remove.png')}/>
+									<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.copyNote} image = {require('../images/copy.png')}/>
+									<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.shareNote} image = {require('../images/share.png')}/>
+								</View>
 							</View>
 						</View>
+						<Animated.View style= {[{backgroundColor: ColorScheme.primary, height: 0, justifyContent: 'center', alignItems: 'center'}, {height: this.state.copyAnim}]}>
+							<Text style = {{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Note Copied</Text>
+						</Animated.View>
 					</View>
 				</TouchableHighlight>
 			);
