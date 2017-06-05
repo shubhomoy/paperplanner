@@ -68,11 +68,20 @@ class MainActivity extends React.Component {
 	}
 
 	render() {
+
+		const showTitle = () => {
+			if(this.props.notes.isSearching) {
+				return 'Result (' + this.props.notes.items.length + ')';
+			}else{
+				return 'All notes (' + this.props.notes.items.length + ')';
+			}
+		}
+
 		const ListHeader = () => {
 			return(
 				<View style = {{flex: 1, height: 95, flexDirection: 'row', alignItems: 'flex-end', paddingRight: 15}}>
 					<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginLeft: 20, marginBottom: 10, flex: 1}}>
-						All Notes
+						{ showTitle() }
 					</Text>
 					<SecondaryButton title = "Settings" withBorder = {true} color = {ColorScheme.primary} onPressFunction = {this.gotoSettings} />
 				</View> 
