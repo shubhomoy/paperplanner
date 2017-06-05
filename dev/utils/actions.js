@@ -5,9 +5,18 @@ const ACTIONS = {
 		}
 	},
 	searchNotes: (searchText) => {
-		return {
-			type: 'SEARCH',
-			data: searchText
+		if(searchText.trim().length > 0) {
+			return {
+				type: 'SEARCH',
+				data: searchText,
+				isSearching: true
+			}
+		}else{
+			return {
+				type: 'SEARCH',
+				data: searchText,
+				isSearching: false
+			}
 		}
 	}
 }

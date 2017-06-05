@@ -16,6 +16,9 @@ class MainActivity extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			welcomeNoteShown: false
+		}
 		this.newNote = this.newNote.bind(this);
 		this.gotoSettings = this.gotoSettings.bind(this);
 		this.renderFirstNote = this.renderFirstNote.bind(this);
@@ -40,7 +43,7 @@ class MainActivity extends React.Component {
 	}
 
 	renderFirstNote = () => {
-		if(this.props.notes.length == 0) {
+		if(this.props.notes.items.length == 0 && !this.props.notes.isSearching) {
 			return(
 				<View style = {{position: 'absolute', height: '100%', backgroundColor: '#fff', width: '100%', top: 0}}>
 					<View style = {{flex: 1, alignItems: 'center', paddingTop: 50}}>
@@ -79,7 +82,7 @@ class MainActivity extends React.Component {
 			<View style = {{flex:1}}>
 				<FlatList 
 					ref = "list"
-					data = {this.props.notes}
+					data = {this.props.notes.items}
 					renderItem = {({item, index}) => <EntityItem index = {index} note = {item}/>}
 					keyExtractor={(item, index) => item.id}
 					ListHeaderComponent = {ListHeader}

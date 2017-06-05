@@ -1,6 +1,11 @@
 import realm from '../../database';
 
-export default (state = [], action) => {
+let initialState = {
+	isSearching: false,
+	items: []
+}
+
+export default (state = initialState, action) => {
 	let notes = [];
 	switch(action.type) {
 		case 'GET_NOTES':
@@ -8,7 +13,7 @@ export default (state = [], action) => {
 			realm.objects('Note').sorted('updated_on', true).map((note) => {
 				notes.push(note);
 			})
-			state = notes;
+			state = Object.assign({}, state, {isSearching: false, items: notes});
 			return state;
 			break;
 
@@ -18,11 +23,11 @@ export default (state = [], action) => {
 				notes.push(note);
 			});
 			notes = notes.filter((note) => {
-				if(note.note_text.indexOf(action.data) !== -1) {
+				if(note.note_text.toLowerCase().indexOf(action.data.toLowerCase()) !== -1) {
 					return note;
 				}
 			})
-			state = notes;
+			state = Object.assign({}, state, {isSearching: true, items: notes});;
 			return state;
 			break;
 		default:
