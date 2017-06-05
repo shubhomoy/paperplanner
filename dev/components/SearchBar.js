@@ -1,40 +1,34 @@
 import React from 'react';
-import { View, Text, TextInput, Image, TouchableNativeFeedback } from 'react-native';
+import { View, Text, TextInput, Image, TouchableNativeFeedback, Animated } from 'react-native';
 import { ColorScheme, styles } from '../css/style';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
+import ClearButton from './ClearButton';
 
 class SearchBar extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			searchText: '',
-			showCross: false
-		};
 		this.handleInput = this.handleInput.bind(this);
 		this.renderClose = this.renderClose.bind(this);
 	}
 
+
 	handleInput = (text) => {
+		this.props.searchNotes(text);
 		if(text && text.trim().length > 0) {
-			this.setState({searchText: text, showCross: true});
-			this.props.searchNotes(text);
+			this.setState({showCross: true});
 		}else{
-			this.setState({searchText: '', showCross: false});
+			this.setState({showCross: false});
 			this.props.getNotes();
 		}
 	}
 
 	renderClose = () => {
-		if(this.state.showCross) {
+		if(this.props.app.searchText.trim().length > 0) {
 			return(
-				<TouchableNativeFeedback onPress = {() => this.handleInput('')}>
-					<View>
-						<Image source = {require('../images/cross_filled_black.png')} style = {{height: 25, width: 25}}/>
-					</View>
-				</TouchableNativeFeedback>
+				<ClearButton/>
 			);
 		}else{
 			return null;
@@ -47,7 +41,7 @@ class SearchBar extends React.Component {
 				<View style = {container}>
 					<Image source = {require('../images/search.png')} style = {{height: 20, width: 20}}/>
 					<TextInput
-						value = {this.state.searchText}
+						value = {this.props.app.searchText}
 						onChangeText = {(text) => this.handleInput(text)}
 						style = {textInputStyle}
 						multiline = {false}
@@ -97,7 +91,8 @@ const textInputStyle = {
 
 function mapStateToProps(state) {
 	return {
-		notes: state.notes
+		notes: state.notes,
+		app: state.app
 	}
 }
 

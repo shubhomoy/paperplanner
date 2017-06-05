@@ -19,6 +19,8 @@ export default (state = initialState, action) => {
 			break;
 
 		case 'SEARCH':
+			if(action.data.trim().length == 0)
+				return state;
 			notes = [];
 			realm.objects('Note').sorted('updated_on', true).map((note) => {
 				notes.push(note);
@@ -28,7 +30,7 @@ export default (state = initialState, action) => {
 					return note;
 				}
 			})
-			state = Object.assign({}, state, {isSearching: true, items: notes});;
+			state = Object.assign({}, state, {isSearching: true, items: notes});
 			return state;
 			break;
 		default:

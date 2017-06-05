@@ -10,6 +10,7 @@ import EntityItem from '../components/EntityItem';
 import SearchBar from '../components/SearchBar';
 import Separator_1 from '../components/Separator_1';
 import SecondaryButton from '../components/SecondaryButton';
+import NoResult from '../components/NoResult';
 import { BoxShadow } from 'react-native-shadow';
 
 class MainActivity extends React.Component {
@@ -77,6 +78,19 @@ class MainActivity extends React.Component {
 			}
 		}
 
+		const ListFooter = () => {
+			if(this.props.notes.isSearching && this.props.notes.items.length == 0) {
+				return(
+					<NoResult />
+				);
+			}else{
+				
+				return(
+					<View style = {{flex: 1, height: 200, backgroundColor: '#fff'}} />
+				);
+			}
+		}
+
 		const ListHeader = () => {
 			return(
 				<View style = {{flex: 1, height: 95, flexDirection: 'row', alignItems: 'flex-end', paddingRight: 15}}>
@@ -109,14 +123,6 @@ class MainActivity extends React.Component {
 			</View>
 		);
 	}
-}
-
-const ListFooter = () => {
-	return(
-		<View style = {{flex: 1, height: 200, backgroundColor: '#fff'}}>
-			
-		</View> 
-	);
 }
 
 const addBtn = {
