@@ -13,7 +13,7 @@ export default class SecondaryButton extends React.Component {
 			return {
 				justifyContent: 'center',
 				alignItems: 'center',
-				borderWidth: 2,
+				borderWidth: 1,
 				borderColor: this.props.color,
 				padding: 5,
 				paddingLeft: 15,
@@ -38,6 +38,7 @@ export default class SecondaryButton extends React.Component {
 	render() {
 		const btnText = {
 			color: this.props.color,
+			fontSize: 13,
 			fontWeight: 'bold'
 		}
 

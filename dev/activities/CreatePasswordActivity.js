@@ -93,7 +93,7 @@ class CreatePasswordActivity extends React.Component {
 	renderPage = () => {
 		const inputStyle = {
 			textAlign: 'center',
-			fontSize: 20,
+			fontSize: 17,
 			borderRadius: 5,
 			borderColor: ColorScheme.green,
 			borderWidth: this.state.borderWidth,
@@ -105,8 +105,8 @@ class CreatePasswordActivity extends React.Component {
 			return(
 				<ScrollView style = {{flex: 1}}>
 					<View style = {{alignItems: 'center'}}>
-						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Create a Password</Text>
-						<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}><Text style = {{fontWeight: 'bold'}}>Lock</Text> your selected notes with a password</Text>
+						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Create a Password</Text>
+						<Text style = {{color: '#212121', fontSize: 17, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}><Text style = {{fontWeight: 'bold'}}>Lock</Text> your selected notes with a password</Text>
 						<BoxShadow setting = {shadow}>
 							<TextInput 
 								onChangeText = {(text) => {
@@ -142,8 +142,8 @@ class CreatePasswordActivity extends React.Component {
 			return(
 				<ScrollView style = {{flex: 1}}>
 					<View style = {{alignItems: 'center', flex: 1}}>
-						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Update Password</Text>
-						<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}> Enter your old and new password</Text>
+						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Update Password</Text>
+						<Text style = {{color: '#212121', fontSize: 17, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}> Enter your old and new password</Text>
 						<BoxShadow setting = {shadow}>
 							<TextInput 
 								onChangeText = {(text) => {
@@ -195,7 +195,7 @@ class CreatePasswordActivity extends React.Component {
 			return(
 				<View style = {{alignItems: 'center'}}>
 					<Image source = {require('../images/success.png')} style = {{height: 70, width: 70, marginTop: 50}} />
-					<Text style = {{color: ColorScheme.green, marginTop: 5, fontSize: 25, fontWeight: 'bold'}}>Password Set</Text>
+					<Text style = {{color: ColorScheme.green, marginTop: 5, fontSize: 20, fontWeight: 'bold'}}>Password Set</Text>
 					<Text style = {{color: ColorScheme.text, marginTop: 35, marginBottom: 20, fontSize: 17, width: Dimensions.get('window').width/2, textAlign: 'center'}}>You can now lock your notes with this password</Text>
 					<SecondaryButton title = "ok" color = {ColorScheme.primary} withBorder = {true} onPressFunction = {Actions.pop}/>
 				</View>

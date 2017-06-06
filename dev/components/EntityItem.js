@@ -208,7 +208,7 @@ class EntityItem extends React.Component {
 
 	renderLock = () => {
 		if(this.state.isLocked) {
-			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/locked.png')}/>
+			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/locked.png')} style = {{marginLeft: 0, paddingLeft: 0}}/>
 		}else
 			return <ImageButton onPressFunction={this.handleLock} image = {require('../images/key.png')} style = {{marginLeft: 0, paddingLeft: 0}}/>
 	}
@@ -230,6 +230,7 @@ class EntityItem extends React.Component {
 						onChangeText = {(text) => this.setState({title: text})}
 						underlineColorAndroid = 'transparent'
 						maxLength = {50}
+						autoCapitalize="words"
 						style = {{width: Dimensions.get('window').width/2, textAlign: 'center', fontSize: 20, borderWidth: 0.5, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, marginTop: 10, borderRadius: 3}}
 						placeholder = "Enter title"/>
 					{this.showError()}
@@ -310,7 +311,7 @@ const itemStyle = {
 }
 
 const itemTextStyle = {
-	fontSize: 20,
+	fontSize: 17,
 	color: '#212121',
 	flex: 1
 }

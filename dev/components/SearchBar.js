@@ -85,7 +85,7 @@ const textInputStyle = {
 	flex: 1,
 	padding: 0,
 	marginLeft: 10,
-	fontSize: 20,
+	fontSize: 17,
 	paddingRight: 5
 }
 

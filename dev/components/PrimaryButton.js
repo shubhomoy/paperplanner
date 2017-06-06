@@ -11,7 +11,7 @@ export default class PrimaryButton extends React.Component {
 			padding: 5,
 			paddingLeft: 15,
 			paddingRight: 15,
-			borderWidth: 2,
+			borderWidth: 1,
 			borderColor: this.props.color,
 			borderRadius: 3,
 			margin: 5
@@ -28,5 +28,6 @@ export default class PrimaryButton extends React.Component {
 
 const btnText = {
 	color: '#fff',
-	fontWeight: 'bold'
+	fontWeight: 'bold',
+	fontSize: 13
 }

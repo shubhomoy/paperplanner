@@ -216,7 +216,7 @@ class BackupActivity extends React.Component {
 					
 						<View style = {{flex: 1, flexDirection: 'row', paddingTop: 10}}>
 							<Image source = {require('../images/backup_2.png')} style = {{height: 30, width: 30, marginLeft: 20, marginTop: 5}} />
-							<Text style = {{paddingLeft: 20, flex: 1, paddingRight: 20, fontSize: 20, color: ColorScheme.text}}>
+							<Text style = {[textStyle, {paddingLeft: 20, flex: 1, paddingRight: 20, color: ColorScheme.text}]}>
 								Backup your notes to <Text style = {{fontWeight: 'bold'}}>Google Drive</Text>. You can restore them when you reinstall Paper. Notes you backup will <Text style = {{fontWeight: 'bold'}}>replace</Text> the previous backed up notes.
 							</Text>
 						</View>
@@ -231,7 +231,7 @@ class BackupActivity extends React.Component {
 
 						<View style = {{flex: 1, flexDirection: 'row', paddingTop: 10}}>
 							<Image source = {require('../images/import_2.png')} style = {{height: 30, width: 30, marginLeft: 20, marginTop: 5}} />
-							<Text style = {{paddingLeft: 20, flex: 1, paddingRight: 20, fontSize: 20, color: ColorScheme.text}}>
+							<Text style = {[textStyle, {paddingLeft: 20, flex: 1, paddingRight: 20, color: ColorScheme.text}]}>
 								Import notes from a previous backup from Google Drive.
 							</Text>
 						</View>
@@ -245,7 +245,7 @@ class BackupActivity extends React.Component {
 
 						<View style = {{flex: 1, flexDirection: 'row', paddingTop: 50, paddingBottom: 100}}>
 							<Image source = {require('../images/drive.png')} style = {{height: 30, width: 30, marginLeft: 20, marginTop: 5}} />
-							<Text style = {{paddingLeft: 20, flex: 1, paddingRight: 20, fontSize: 20, color: ColorScheme.text}}>
+							<Text style = {{paddingLeft: 20, flex: 1, paddingRight: 20, fontSize: 17, color: ColorScheme.text}}>
 								<Text style = {titleStyle}>Google Drive Settings</Text>{"\n\n"}
 								<Text>Account</Text>{"\n"}
 								<Text style = {{color: '#9e9e9e', fontSize: 15}}>{this.state.accountName}</Text>
@@ -258,7 +258,7 @@ class BackupActivity extends React.Component {
 }
 
 const textStyle = {
-
+	fontSize: 17
 }
 
 const titleStyle = {

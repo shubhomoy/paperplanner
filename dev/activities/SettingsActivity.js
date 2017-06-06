@@ -75,7 +75,7 @@ const listItemStyle = {
 }
 
 const listTextStyle = {
-	fontSize: 20,
+	fontSize: 17,
 	color: '#212121',
 	paddingLeft: 5
 }

@@ -147,7 +147,7 @@ class ViewNoteActivity extends React.Component {
 const dateTitleStyle = {
 	fontWeight: 'bold',
 	paddingLeft: 20,
-	fontSize: 15
+	fontSize: 13
 }
 
 const dateStyle = {
@@ -155,7 +155,7 @@ const dateStyle = {
 }
 
 const textStyle = {
-	fontSize: 25,
+	fontSize: 17,
 	color: '#212121',
 	padding: 20
 }
@@ -198,7 +198,7 @@ const inputShadow = {
 
 const inputStyle = {
 	textAlign: 'center',
-	fontSize: 20,
+	fontSize: 17,
 	borderRadius: 5,
 	backgroundColor: '#fff',
 	width: Dimensions.get('window').width/1.5

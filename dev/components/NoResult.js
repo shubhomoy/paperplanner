@@ -25,7 +25,7 @@ export default class NoResult extends React.Component {
 		return(
 			<Animated.View style = {[{flex: 1, alignItems: 'center', paddingTop: 40}, {opacity: this.state.fadeInAnim}]}>
 				<Animated.Image source = {require('../images/document.png')} style = {{height: this.state.zoomInAnim, width: this.state.zoomInAnim}}/>
-				<Text style = {{fontSize: 20, marginTop: 10, color: '#9e9e9e'}}>No results found</Text>
+				<Text style = {{fontSize: 17, marginTop: 10, color: '#9e9e9e'}}>No results found</Text>
 			</Animated.View>
 		);
 	}

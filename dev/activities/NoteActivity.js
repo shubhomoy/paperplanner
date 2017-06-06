@@ -119,7 +119,7 @@ class NoteActivity extends React.Component {
 }
 
 const inputStyle = {
-	fontSize: 20,
+	fontSize: 17,
 	marginLeft: 20,
 	marginRight: 20,
 	textAlignVertical: 'top',

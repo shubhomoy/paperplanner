@@ -14,7 +14,7 @@ export const styles = {
 	pageTitle: {
 		fontWeight: 'bold',
 		color: ColorScheme.primary,
-		fontSize: 25,
+		fontSize: 20,
 		marginLeft: 5
 	}
 };
