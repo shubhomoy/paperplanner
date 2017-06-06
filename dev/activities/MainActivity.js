@@ -12,6 +12,7 @@ import Separator_1 from '../components/Separator_1';
 import SecondaryButton from '../components/SecondaryButton';
 import NoResult from '../components/NoResult';
 import { BoxShadow } from 'react-native-shadow';
+import ASService from '../utils/AsyncStorageService';
 
 class MainActivity extends React.Component {
 
@@ -24,6 +25,8 @@ class MainActivity extends React.Component {
 
 	componentWillMount() {
 		this.props.getNotes();
+		ASService.init();
+
 	}
 
 	componentWillUpdate(nextProps, nextState) {

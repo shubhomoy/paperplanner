@@ -1,4 +1,6 @@
 import realm from '../database';
+import Services from './';
+import _ from 'underscore';
 
 export const getNotesAsJson = () => {
 	let notes = [];
@@ -24,3 +26,17 @@ export const getAppAsJson = () => {
 	return app;
 }
 
+export const setNotes = (notes, cb) => {
+	let existingNoteIds = _.pluck(getNotesAsJson(), 'id');
+
+	realm.write(() => {
+		notes.map((note) => {
+			if(existingNoteIds.indexOf(note.id) === -1) {
+				note.created_on = new Date(note.created_on.toString());
+				note.updated_on = new Date(note.updated_on.toString());
+				realm.create('Note', note);
+			}
+		});
+		cb();
+	});
+}

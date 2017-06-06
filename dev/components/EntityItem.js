@@ -10,6 +10,7 @@ import ACTIONS from '../utils/actions';
 import { Actions } from 'react-native-router-flux';
 import PrimaryButton from './PrimaryButton';
 import SecondaryButton from './SecondaryButton';
+import Constants from '../utils/Constants';
 
 class EntityItem extends React.Component {
 	constructor(props) {
@@ -57,6 +58,10 @@ class EntityItem extends React.Component {
 						})
 					}		
 				}
+			}else{
+				this.setState({
+					errorText: 'Setup a password first'
+				})
 			}
 		});
 	}
@@ -88,7 +93,7 @@ class EntityItem extends React.Component {
 				incorrectTypedPassword: false
 			})
 		}else{
-			AsyncStorage.getItem('paperStore').then((obj) => {
+			AsyncStorage.getItem(Constants.STORE).then((obj) => {
 				if(obj) {
 					obj = JSON.parse(obj);
 					if(obj.is_password_set) {
@@ -96,6 +101,18 @@ class EntityItem extends React.Component {
 							titleSetup: true,
 							incorrectTypedPassword: false
 						});
+					}else{
+						Alert.alert('Setup Password', 'First setup a passcode to lock your notes', [
+							{
+								text: 'Later'	
+							},
+							{
+								text: 'Set password',
+								onPress: () => {
+									Actions.createPasswordActivity();
+								}
+							}
+						])	
 					}
 				}else{
 					Alert.alert('Setup Password', 'First setup a passcode to lock your notes', [
@@ -153,9 +170,34 @@ class EntityItem extends React.Component {
 	}
 
 	openNote = () => {
-		Actions.viewNoteActivity({
-			note: this.props.note
-		});
+		if(this.props.note.is_locked) {
+			AsyncStorage.getItem(Constants.STORE).then((obj) => {
+				obj = JSON.parse(obj);
+				if(obj.is_password_set) {
+					Actions.viewNoteActivity({
+						note: this.props.note
+					});	
+				}else{
+					Alert.alert('Setup Password', 'First setup a passcode to lock your notes', [
+						{
+							text: 'Later'	
+						},
+						{
+							text: 'Set password',
+							onPress: () => {
+								Actions.createPasswordActivity();
+							}
+						}
+					]);			
+				}
+			}).done();
+			
+		}else{
+			Actions.viewNoteActivity({
+				note: this.props.note
+			});	
+		}
+		
 	}
 
 	shareNote = () => {

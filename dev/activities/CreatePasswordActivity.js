@@ -33,14 +33,20 @@ class CreatePasswordActivity extends React.Component {
 		AsyncStorage.getItem(Constants.STORE).then((obj) => {
 			if(obj) {
 				obj = JSON.parse(obj);
-				this.setState({
-					passwordIsSet: 1,
-					prevPass: obj.password
-				});
+				if(obj.is_password_set) {
+					this.setState({
+						passwordIsSet: 1,
+						prevPass: obj.password
+					});	
+				}else{
+					this.setState({
+						passwordIsSet: 0
+					});
+				}
 			}else{
 				this.setState({
 					passwordIsSet: 0
-				})
+				});
 			}
 		}).done();
 	}

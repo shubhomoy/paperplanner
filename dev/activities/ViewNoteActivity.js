@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
 import realm from '../database';
 import moment from 'moment';
+import Constants from '../utils/Constants';
 
 class ViewNoteActivity extends React.Component {
 
@@ -27,7 +28,7 @@ class ViewNoteActivity extends React.Component {
 	}
 
 	viewLockedNote = () => {
-		AsyncStorage.getItem('paperStore').then((obj) => {
+		AsyncStorage.getItem(Constants.STORE).then((obj) => {
 			if(obj) {
 				obj = JSON.parse(obj);
 				if(obj.is_password_set) {
