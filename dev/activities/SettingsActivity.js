@@ -8,8 +8,7 @@ import realm from '../database';
 
 GoogleSignin.configure({
 	scopes: ["https://www.googleapis.com/auth/drive.appdata"],
-  	forceConsentPrompt: true,
-  	offlineAccess: true
+  	forceConsentPrompt: true
 })
 .then(() => {
 	
@@ -121,20 +120,11 @@ class SettingsActivity extends React.Component {
 			<View style = {{flex: 1}}>
 				<AppBar title = "Settings" backButton/>
 				<ScrollView>
-					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null} onPress = {() => this.backupNotes()}>
+					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null} onPress = {Actions.backupActivity}>
 						<View>
 							<View style = {listItemStyle}>
 								<Image source = {require('../images/backup.png')} style = {iconStyle}/>
-								<Text style = {listTextStyle}>Backup Notes</Text>
-							</View>
-							<View style = {sepStyle}/>
-						</View>
-					</TouchableHighlight>
-					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => this.importNotes()}>
-						<View>
-							<View style = {listItemStyle}>
-								<Image source = {require('../images/import.png')} style = {iconStyle}/>
-								<Text style = {listTextStyle}>Import Notes</Text>
+								<Text style = {listTextStyle}>Backup and Import Notes</Text>
 							</View>
 							<View style = {sepStyle}/>
 						</View>
@@ -143,7 +133,7 @@ class SettingsActivity extends React.Component {
 						<View>
 							<View style = {listItemStyle}>
 								<Image source = {require('../images/key.png')} style = {iconStyle}/>
-								<Text style = {listTextStyle}>Create/Change Password</Text>
+								<Text style = {listTextStyle}>Create or Change Password</Text>
 							</View>
 							<View style = {sepStyle}/>
 						</View>

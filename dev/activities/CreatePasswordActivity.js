@@ -4,7 +4,9 @@ import { ColorScheme } from '../css/style';
 import { BoxShadow } from 'react-native-shadow';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
+import ASService from'../utils/AsyncStorageService';
 import { Actions } from 'react-native-router-flux';
+import Constants from '../utils/Constants';
 
 class CreatePasswordActivity extends React.Component {
 	constructor(props) {
@@ -28,7 +30,7 @@ class CreatePasswordActivity extends React.Component {
 	}
 
 	componentDidMount() {
-		AsyncStorage.getItem('paperStore').then((obj) => {
+		AsyncStorage.getItem(Constants.STORE).then((obj) => {
 			if(obj) {
 				obj = JSON.parse(obj);
 				this.setState({
@@ -72,18 +74,14 @@ class CreatePasswordActivity extends React.Component {
 	}
 
 	setPassword = () => {
-		AsyncStorage.getItem('paperStore', (result) => {
-			let paperStore = {
-				is_password_set: true,
-				password: this.state.password
-			}
-			AsyncStorage.setItem("paperStore", JSON.stringify(paperStore), (result) => {
-				this.setState({
-					passwordIsSet: 3
-				})
-			});
-		});
-		
+		let paperStore = {
+			is_password_set: true,
+			password: this.state.password
+		};
+		ASService.setItem(paperStore);
+		this.setState({
+			passwordIsSet: 3
+		});	
 	}
 
 	renderPage = () => {
