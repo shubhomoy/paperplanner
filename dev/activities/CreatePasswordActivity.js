@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, AsyncStorage, Dimensions, TextInput, Image } from 'react-native';
+import { View, Text, AsyncStorage, Dimensions, TextInput, Image, ScrollView } from 'react-native';
 import { ColorScheme } from '../css/style';
 import { BoxShadow } from 'react-native-shadow';
 import PrimaryButton from '../components/PrimaryButton';
@@ -99,88 +99,92 @@ class CreatePasswordActivity extends React.Component {
 		if(this.state.passwordIsSet === -1) return null;
 		if(this.state.passwordIsSet === 0) {
 			return(
-				<View style = {{alignItems: 'center'}}>
-					<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Create a Password</Text>
-					<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}><Text style = {{fontWeight: 'bold'}}>Lock</Text> your selected notes with a password</Text>
-					<BoxShadow setting = {shadow}>
-						<TextInput 
-							onChangeText = {(text) => {
-								this.setState({password: text})
-								this.handleInput(text, this.state.confirmPassword);
-							}}
-							style = {inputStyle}
-							maxLength = {20}
-							underlineColorAndroid = 'transparent'
-							secureTextEntry = {true}
-							placeholder = "Password"/>
-					</BoxShadow>
+				<ScrollView style = {{flex: 1}}>
+					<View style = {{alignItems: 'center'}}>
+						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Create a Password</Text>
+						<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}><Text style = {{fontWeight: 'bold'}}>Lock</Text> your selected notes with a password</Text>
+						<BoxShadow setting = {shadow}>
+							<TextInput 
+								onChangeText = {(text) => {
+									this.setState({password: text})
+									this.handleInput(text, this.state.confirmPassword);
+								}}
+								style = {inputStyle}
+								maxLength = {20}
+								underlineColorAndroid = 'transparent'
+								secureTextEntry = {true}
+								placeholder = "Password"/>
+						</BoxShadow>
 
-					<BoxShadow setting = {shadow}>
-						<TextInput
-							onChangeText = {(text) => {
-								this.setState({confirmPassword: text});
-								this.handleInput(this.state.password, text);
-							}} 
-							style = {inputStyle}
-							maxLength = {20}
-							underlineColorAndroid = 'transparent'
-							secureTextEntry = {true}
-							placeholder = "Re-type Password"/>
-					</BoxShadow>
+						<BoxShadow setting = {shadow}>
+							<TextInput
+								onChangeText = {(text) => {
+									this.setState({confirmPassword: text});
+									this.handleInput(this.state.password, text);
+								}} 
+								style = {inputStyle}
+								maxLength = {20}
+								underlineColorAndroid = 'transparent'
+								secureTextEntry = {true}
+								placeholder = "Re-type Password"/>
+						</BoxShadow>
 
-					{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
-				</View>
+						{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
+					</View>
+				</ScrollView>
 			);
 		}
 		if(this.state.passwordIsSet === 1) {
 			return(
-				<View style = {{alignItems: 'center'}}>
-					<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Update Password</Text>
-					<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}> Enter your old and new password</Text>
-					<BoxShadow setting = {shadow}>
-						<TextInput 
-							onChangeText = {(text) => {
-								this.setState({oldPassword: text})
-								this.handleUpdate(text, this.state.password, this.state.confirmPassword);
-							}}
-							style = {inputStyle}
-							maxLength = {20}
-							underlineColorAndroid = 'transparent'
-							secureTextEntry = {true}
-							placeholder = "Old Password"/>
-					</BoxShadow>
-					<BoxShadow setting = {shadow}>
-						<TextInput 
-							onChangeText = {(text) => {
-								this.setState({
-									password: text
-								});
-								this.handleUpdate(this.state.oldPassword, text, this.state.confirmPassword);
-							}}
-							style = {inputStyle}
-							maxLength = {20}
-							underlineColorAndroid = 'transparent'
-							secureTextEntry = {true}
-							placeholder = "New Password"/>
-					</BoxShadow>
+				<ScrollView style = {{flex: 1}}>
+					<View style = {{alignItems: 'center', flex: 1}}>
+						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Update Password</Text>
+						<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}> Enter your old and new password</Text>
+						<BoxShadow setting = {shadow}>
+							<TextInput 
+								onChangeText = {(text) => {
+									this.setState({oldPassword: text})
+									this.handleUpdate(text, this.state.password, this.state.confirmPassword);
+								}}
+								style = {inputStyle}
+								maxLength = {20}
+								underlineColorAndroid = 'transparent'
+								secureTextEntry = {true}
+								placeholder = "Old Password"/>
+						</BoxShadow>
+						<BoxShadow setting = {shadow}>
+							<TextInput 
+								onChangeText = {(text) => {
+									this.setState({
+										password: text
+									});
+									this.handleUpdate(this.state.oldPassword, text, this.state.confirmPassword);
+								}}
+								style = {inputStyle}
+								maxLength = {20}
+								underlineColorAndroid = 'transparent'
+								secureTextEntry = {true}
+								placeholder = "New Password"/>
+						</BoxShadow>
 
-					<BoxShadow setting = {shadow}>
-						<TextInput
-							onChangeText = {(text) => {
-								this.setState({
-									confirmPassword: text
-								});
-								this.handleUpdate(this.state.oldPassword, this.state.password, text);
-							}} 
-							style = {inputStyle}
-							maxLength = {20}
-							underlineColorAndroid = 'transparent'
-							secureTextEntry = {true}
-							placeholder = "Re-type New Password"/>
-					</BoxShadow>
+						<BoxShadow setting = {shadow}>
+							<TextInput
+								onChangeText = {(text) => {
+									this.setState({
+										confirmPassword: text
+									});
+									this.handleUpdate(this.state.oldPassword, this.state.password, text);
+								}} 
+								style = {inputStyle}
+								maxLength = {20}
+								underlineColorAndroid = 'transparent'
+								secureTextEntry = {true}
+								placeholder = "Re-type New Password"/>
+						</BoxShadow>
 
-					{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
-				</View>
+						{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
+					</View>
+					</ScrollView>
 			);
 		}
 		if(this.state.passwordIsSet === 3) {

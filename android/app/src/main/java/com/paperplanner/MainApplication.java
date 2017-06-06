@@ -3,6 +3,7 @@ package com.paperplanner;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.benwixen.rnfilesystem.RNFileSystemPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.horcrux.svg.SvgPackage;
 import io.realm.react.RealmReactPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFileSystemPackage(),
             new RNGoogleSigninPackage(),
             new SvgPackage(),
             new RealmReactPackage()

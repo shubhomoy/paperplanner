@@ -7,18 +7,23 @@ import {GoogleSignin} from 'react-native-google-signin';
 import realm from '../database';
 
 GoogleSignin.configure({
-	scopes: ["https://www.googleapis.com/auth/drive.appdata"], // what API you want to access on behalf of the user, default is email and profile
-  	forceConsentPrompt: true
+	scopes: ["https://www.googleapis.com/auth/drive.appdata"],
+  	forceConsentPrompt: true,
+  	offlineAccess: true
 })
 .then(() => {
-
-});
+	
+});		
 
 
 class SettingsActivity extends React.Component {
 	constructor(props) {
 		super(props);
 		this.backupNotes = this.backupNotes.bind(this);
+		this.importNotes = this.importNotes.bind(this);
+	}
+
+	componentDidMount() {
 	}
 
 	backupNotes = () => {
@@ -36,17 +41,79 @@ class SettingsActivity extends React.Component {
 			};
 			app.notes.push(newNote);
 		});
-		console.warn(JSON.stringify(app));
-		// GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
-		// 	GoogleSignin.signIn().then((user) => {
-		//     	console.warn(JSON.stringify(user));
-		//  	})
-		//     .catch((err) => {
-		//     	console.warn('WRONG SIGNIN', err);
-		//     }).done();
-		// }).catch((err) => {
-		// 	console.warn("Play services error", err.code, err.message);
-		// })
+		app = JSON.stringify(app);
+
+
+
+		GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+			GoogleSignin.signIn().then((user) => {
+
+				const metaData = {
+					name: 'backup.json',
+				    mimeType: 'application/json',
+				    parents: ['appDataFolder']
+				}
+				const multipartBody = '\r\n--foo_bar_baz\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'
+				  + JSON.stringify(metaData) + '\r\n'
+				  + '--foo_bar_baz\r\nContent-Type: application/json\r\n\r\n'
+				  + app + '\r\n'
+				  + '--foo_bar_baz--';
+
+				fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+					method: 'POST',
+					headers: {
+						'Authorization': 'Bearer ' + user.accessToken,
+						'Content-Type': `multipart/related; boundary=foo_bar_baz`,
+						'Content-Length': multipartBody.length						
+					},
+					body: multipartBody
+				}).then((response) => {
+					console.warn(JSON.stringify(response));
+				})
+
+
+		 	}).catch((err) => {
+		    	console.warn('WRONG SIGNIN', err);
+		    }).done();
+		}).catch((err) => {
+			console.warn("Play services error", err.code, err.message);
+		})
+	}
+
+	importNotes = () => {
+		GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+			GoogleSignin.signIn().then((user) => {
+				fetch('https://www.googleapis.com/drive/v3/files?q=' + encodeURIComponent("'appDataFolder' in parents") + '&spaces=appDataFolder', {
+					method: 'GET',
+					headers: {
+						'Authorization': 'Bearer ' + user.accessToken
+					}
+				}).then((response) => {
+					if(response.ok)
+						return response.json();
+				}).then(body => {
+					if(body && body.files && body.files.length > 0) {
+						let fileId = body.files[0].id;
+						fetch('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media', {
+							method: 'GET',
+							headers: {
+								'Authorization': 'Bearer ' + user.accessToken
+							}
+						}).then(response => {
+							console.warn(JSON.stringify(response));
+							if(response.ok)
+								return response.json();
+						}).then(body => {
+							console.warn(JSON.stringify(body));
+						})
+					}
+				})
+			}).catch((err) => {
+				console.warn('WRONG SIGNIN', err);
+			}).done();
+		}).catch((err) => {
+			console.warn("Play services error", err.code, err.message);
+		})
 	}
 
 	render() {
@@ -63,7 +130,7 @@ class SettingsActivity extends React.Component {
 							<View style = {sepStyle}/>
 						</View>
 					</TouchableHighlight>
-					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null}>
+					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => this.importNotes()}>
 						<View>
 							<View style = {listItemStyle}>
 								<Image source = {require('../images/import.png')} style = {iconStyle}/>

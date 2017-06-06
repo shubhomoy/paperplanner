@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-filesystem')
     compile(project(':react-native-google-signin')) {
 	exclude group: "com.google.android.gms"
     }
