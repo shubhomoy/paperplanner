@@ -48,7 +48,7 @@ class SettingsActivity extends React.Component {
 							<View style = {sepStyle}/>
 						</View>
 					</TouchableHighlight>
-					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {() => null}>
+					<TouchableHighlight activeOpacity = {0.9} underlayColor = {ColorScheme.primary} onPress = {Actions.aboutActivity}>
 						<View>
 							<View style = {listItemStyle}>
 								<Image source = {require('../images/info.png')} style = {iconStyle}/>

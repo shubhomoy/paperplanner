@@ -51,7 +51,8 @@ class MainActivity extends React.Component {
 	componentDidMount() {
 		Animated.spring(this.state.translateAnim, {
 			toValue: 16,
-			friction: 3
+			friction: 2,
+			tension: 2
 		}).start();
 		Animated.timing(this.state.fadeAnim, {
 			toValue: 1

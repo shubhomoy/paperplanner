@@ -68,7 +68,7 @@ const container = {
 	flex: 1,
 	flexDirection: 'row',
 	alignItems: 'center',
-	backgroundColor: 'rgba(211, 215, 218 ,0.8)',
+	backgroundColor: 'rgba(238, 238, 238 ,0.8)',
 	margin: 5,
 	marginLeft: 20,
 	marginRight: 20,

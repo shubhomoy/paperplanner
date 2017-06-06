@@ -255,7 +255,7 @@ class BackupActivity extends React.Component {
 						<View style = {{flex: 1, flexDirection: 'row', paddingTop: 10}}>
 							<Image source = {require('../images/backup_2.png')} style = {{height: 30, width: 30, marginLeft: 20, marginTop: 5}} />
 							<Text style = {[textStyle, {paddingLeft: 20, flex: 1, paddingRight: 20, color: ColorScheme.text}]}>
-								Backup your notes to <Text style = {{fontWeight: 'bold'}}>Google Drive</Text>. You can restore them when you reinstall Paper. Notes you backup will <Text style = {{fontWeight: 'bold'}}>replace</Text> the previous backed up notes.
+								Backup your notes to <Text style = {{fontWeight: 'bold'}}>Google Drive</Text>. You can restore them when you reinstall Paper.
 							</Text>
 						</View>
 						<View style = {{flexDirection: 'row', paddingLeft: 65, paddingTop: 30}}>
