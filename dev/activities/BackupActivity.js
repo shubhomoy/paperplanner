@@ -11,6 +11,7 @@ import ASService from '../utils/AsyncStorageService';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
+import _ from 'underscore';
 
 GoogleSignin.configure({
 	scopes: ["https://www.googleapis.com/auth/drive.appdata"],
@@ -95,7 +96,6 @@ class BackupActivity extends React.Component {
 	}
 
 	uploadFile = (accessToken, body) => {
-		this.showBackupMessage('Backing up', false);
 		fetch(Constants.DRIVE_UPLOAD_URL, {
 			method: 'POST',
 			headers: {
@@ -111,7 +111,7 @@ class BackupActivity extends React.Component {
 	}
 
 
-	downloadFile = (fileId, accessToken) => {
+	downloadFile = (fileId, accessToken, backup = false) => {
 		this.setState({
 			importText: 'Downloading'
 		});
@@ -124,10 +124,14 @@ class BackupActivity extends React.Component {
 			if(response.ok)
 				return response.json();
 		}).then(body => {
-			this.showImportMessage('Import Complete');
-			setNotes(body.notes, () => {
-				this.props.getNotes();
-			});
+			if(!backup) {
+				this.showImportMessage('Import Complete');
+				setNotes(body.notes, () => {
+					this.props.getNotes();
+				});
+			}else{
+				this.backupUtil(accessToken, body.notes);
+			}
 		})
 	}
 
@@ -166,44 +170,78 @@ class BackupActivity extends React.Component {
 	}
 
 	backup = () => {
+		GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+			GoogleSignin.signIn().then((user) => {
+				this.setState({
+					accountName: user.email
+				});
+				ASService.setItem({
+					googleAccountName: user.email
+				});
+				this.showBackupMessage('Backing up', false);
+
+				fetch('https://www.googleapis.com/drive/v3/files?q=' + encodeURIComponent("'appDataFolder' in parents") + '&spaces=appDataFolder', {
+					method: 'GET',
+					headers: {
+						'Authorization': 'Bearer ' + user.accessToken
+					}
+				}).then((response) => {
+					if(response.ok)
+						return response.json();
+				}).then(body => {
+					if(body && body.files && body.files.length > 0) {
+						let fileId = body.files[0].id;
+						this.downloadFile(fileId, user.accessToken, true);
+					}else{
+						this.backupUtil(user.accessToken);
+					}
+				})
+			}).catch((err) => {
+				this.showBackupMessage('Invalid Sign in');
+			}).done();
+		}).catch((err) => {
+			this.showBackupMessage('Play Service error');
+		});
+	}
+
+	backupUtil = (accessToken, backedUpNotes = []) => {
 		let entities = getAppAsJson();
+		let backedUpIds = _.pluck(backedUpNotes, 'id');
+		let existingIds = _.pluck(entities.notes, 'id');
+		let allIds = _.union(existingIds, backedUpIds);
+		let notesToBackup = {
+			notes: []
+		};
+		allIds.map((id) => {
+			let index = existingIds.indexOf(id);
+			if(index !== -1) {
+				notesToBackup.notes.push(entities.notes[index]);
+			}else{
+				index = backedUpIds.indexOf(id);
+				notesToBackup.notes.push(backedUpNotes[index]);
+			}
+		});
+		
 
 		AsyncStorage.getItem(Constants.STORE).then((obj) => {
 			let app = JSON.parse(obj);
 			app.lastBackup = (new Date()).toString();
 			ASService.setItem(app);
-			app = Object.assign({}, app, entities);
+			app = Object.assign({}, app, notesToBackup);
 			app = JSON.stringify(app);
 
-			GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
-				GoogleSignin.signIn().then((user) => {
+			const metaData = {
+				name: Constants.GOOGLE_BACKUP_FILENAME,
+			    mimeType: 'application/json',
+			    parents: ['appDataFolder']
+			}
+			const multipartBody = '\r\n--' + Constants.MULTIPART_BOUNDARY_STRING + '\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'
+			  + JSON.stringify(metaData) + '\r\n'
+			  + '--' + Constants.MULTIPART_BOUNDARY_STRING + '\r\nContent-Type: application/json\r\n\r\n'
+			  + app + '\r\n'
+			  + '--' + Constants.MULTIPART_BOUNDARY_STRING + '--';
 
-					const metaData = {
-						name: Constants.GOOGLE_BACKUP_FILENAME,
-					    mimeType: 'application/json',
-					    parents: ['appDataFolder']
-					}
-					const multipartBody = '\r\n--' + Constants.MULTIPART_BOUNDARY_STRING + '\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'
-					  + JSON.stringify(metaData) + '\r\n'
-					  + '--' + Constants.MULTIPART_BOUNDARY_STRING + '\r\nContent-Type: application/json\r\n\r\n'
-					  + app + '\r\n'
-					  + '--' + Constants.MULTIPART_BOUNDARY_STRING + '--';
-
-
-					this.uploadFile(user.accessToken, multipartBody);
-					this.setState({
-						accountName: user.email
-					});
-					ASService.setItem({
-						googleAccountName: user.email
-					});
-
-			 	}).catch((err) => {
-			    	this.showBackupMessage('Invalid Sign in');
-			    }).done();
-			}).catch((err) => {
-				this.showBackupMessage('Play Services error');
-			})
+			this.uploadFile(accessToken, multipartBody);			
 		}).done();
 	}
 
