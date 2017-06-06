@@ -16,13 +16,13 @@ export default class AboutActivity extends React.Component {
 					<Text style = {[versionStyle, {color: '#757575'}]}>Build #89</Text>
 				</View>
 				<View style = {{flex: 1, justifyContent: 'flex-end', alignItems:'center'}}>
-					<TouchableNativeFeedback>
+					<TouchableNativeFeedback onPress = {Actions.termsActivity}>
 						<View style = {{padding: 15}}>
-							<Text style = {{fontSize: 20, color: ColorScheme.text}}>Terms and Conditions</Text>
+							<Text style = {{fontSize: 20, color: ColorScheme.text}}>Privacy Policy</Text>
 						</View>
 					</TouchableNativeFeedback>
 					<View style = {{height: 0.5, backgroundColor: '#757575', width: Dimensions.get('window').width/2}}/>
-					<TouchableNativeFeedback>
+					<TouchableNativeFeedback onPress = {Actions.thirdPartyActivity}>
 						<View style = {{padding: 15, marginBottom: 20}}>
 							<Text style = {{fontSize: 20, color: ColorScheme.text}}>Third-party softwares</Text>
 						</View>

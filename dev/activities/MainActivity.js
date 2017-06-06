@@ -68,7 +68,7 @@ class MainActivity extends React.Component {
 	}
 
 	renderFirstNote = () => {
-		if(this.props.notes.items.length == 0 && !this.props.notes.isSearching) {
+		if(this.props.notes.allNotes.length == 0 && !this.props.notes.isSearching) {
 			return(
 				<View style = {{position: 'absolute', height: '100%', backgroundColor: '#fff', width: '100%', top: 0}}>
 					<View style = {{flex: 1, alignItems: 'center', paddingTop: 50}}>
@@ -95,14 +95,14 @@ class MainActivity extends React.Component {
 
 		const showTitle = () => {
 			if(this.props.notes.isSearching) {
-				return 'Result (' + this.props.notes.items.length + ')';
+				return 'Result (' + this.props.notes.activeNotes.length + ')';
 			}else{
-				return 'All notes (' + this.props.notes.items.length + ')';
+				return 'All notes (' + this.props.notes.allNotes.length + ')';
 			}
 		}
 
 		const ListFooter = () => {
-			if(this.props.notes.isSearching && this.props.notes.items.length == 0) {
+			if(this.props.notes.isSearching && this.props.notes.activeNotes.length == 0) {
 				return(
 					<NoResult />
 				);
@@ -129,7 +129,7 @@ class MainActivity extends React.Component {
 			<View style = {{flex:1}}>
 				<FlatList 
 					ref = "list"
-					data = {this.props.notes.items}
+					data = {this.props.notes.activeNotes}
 					renderItem = {({item, index}) => <EntityItem index = {index} note = {item}/>}
 					keyExtractor={(item, index) => item.id}
 					ListHeaderComponent = {ListHeader}
