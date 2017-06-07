@@ -4,6 +4,11 @@ const ACTIONS = {
 			type: 'GET_NOTES'
 		}
 	},
+	hideKeyboard: () => {
+		return {
+			type: 'HIDE_KEYBOARD'
+		}
+	},
 	searchNotes: (searchText) => {
 		if(searchText.trim().length > 0) {
 			return {

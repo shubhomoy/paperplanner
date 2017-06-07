@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Image, TouchableNativeFeedback, Animated } from 'react-native';
+import { View, Text, TextInput, Image, TouchableNativeFeedback, Animated, Keyboard } from 'react-native';
 import { ColorScheme, styles } from '../css/style';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,6 +10,9 @@ class SearchBar extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			showCross: false
+		}
 		this.handleInput = this.handleInput.bind(this);
 		this.renderClose = this.renderClose.bind(this);
 	}
@@ -21,7 +24,7 @@ class SearchBar extends React.Component {
 			this.setState({showCross: true});
 		}else{
 			this.setState({showCross: false});
-			this.props.getNotes();
+			this.props.searchNotes('');
 		}
 	}
 
@@ -31,6 +34,8 @@ class SearchBar extends React.Component {
 				<ClearButton/>
 			);
 		}else{
+			if(this.props.app.hideKeyboard)
+				Keyboard.dismiss();
 			return null;
 		}
 	}
@@ -98,7 +103,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		getNotes: ACTIONS.getNotes,
 		searchNotes: ACTIONS.searchNotes
 	}, dispatch);
 }

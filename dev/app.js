@@ -13,7 +13,6 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './utils/reducers';
 import middlewares from './utils/middlewares';
-import PropTypes from 'prop-types';
 
 const store = createStore(reducers, {}, middlewares);
 

@@ -26,7 +26,7 @@ class ClearButton extends React.Component {
 
 	render() {
 		return(
-			<TouchableNativeFeedback onPress = {() => {this.props.searchNotes('');}}>
+			<TouchableNativeFeedback onPress = {() => {this.props.searchNotes(''); this.props.hideKeyboard()}}>
 				<View>
 					<Animated.Image source = {require('../images/cross_filled_black.png')} style = {{opacity: this.state.fadeInAnim, height: this.state.zoomInAnim, width: this.state.zoomInAnim}}/>
 				</View>
@@ -43,7 +43,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		searchNotes: ACTIONS.searchNotes
+		searchNotes: ACTIONS.searchNotes,
+		hideKeyboard: ACTIONS.hideKeyboard
 	}, dispatch);
 }
 
