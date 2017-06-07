@@ -28,6 +28,8 @@ class NoteActivity extends React.Component {
 	componentDidMount() {
 		if(this.props.action === 'edit') {
 			this.setState({noteText: this.state.note.note_text});
+		}else if(this.props.action === 'share') {
+			this.setState({noteText: this.props.note});
 		}
 		BackHandler.addEventListener('hardwareBackPressed', this.onBack);
 	}
@@ -37,7 +39,7 @@ class NoteActivity extends React.Component {
 	}
 
 	onBack = () => {
-		if(this.props.action === 'new') {
+		if(this.props.action === 'new' || this.props.action === 'share') {
 			if(this.state.noteText.trim().length > 0) {
 				this.promptSave();
 			}else{
@@ -71,7 +73,7 @@ class NoteActivity extends React.Component {
 	}
 
 	saveNote = () => {
-		if(this.props.action === 'new') {
+		if(this.props.action === 'new' || this.props.action === 'share') {
 			realm.write(() => {
 				let newNote = realm.create('Note', {
 					id: Services.getUniqueID(),

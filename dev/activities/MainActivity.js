@@ -21,11 +21,18 @@ class MainActivity extends React.Component {
 		this.state = {
 			translateAnim: new Animated.Value(-65),
 			fadeAnim: new Animated.Value(0),
-			animatePlus: new Animated.Value(-50)
+			animatePlus: new Animated.Value(-50),
+			shareText: this.props.shareText
 		}
 		this.newNote = this.newNote.bind(this);
 		this.gotoSettings = this.gotoSettings.bind(this);
 		this.renderFirstNote = this.renderFirstNote.bind(this);
+		if(this.state.shareText) {
+			Actions.noteActivity({
+				note: this.state.shareText,
+				action: 'share'
+			});
+		}
 	}
 
 	componentWillMount() {

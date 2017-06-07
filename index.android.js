@@ -6,9 +6,16 @@ import {
 import App from './dev/app';
 
 export default class paperplanner extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			shareText: props.share_text
+		}
+	}
+
     render() {
         return (
-            <App />
+            <App shareText = {this.state.shareText}/>
         );
     }
 }
