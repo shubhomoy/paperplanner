@@ -7,6 +7,7 @@ import SecondaryButton from '../components/SecondaryButton';
 import ASService from'../utils/AsyncStorageService';
 import { Actions } from 'react-native-router-flux';
 import Constants from '../utils/Constants';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class CreatePasswordActivity extends React.Component {
 	constructor(props) {
@@ -103,7 +104,6 @@ class CreatePasswordActivity extends React.Component {
 		if(this.state.passwordIsSet === -1) return null;
 		if(this.state.passwordIsSet === 0) {
 			return(
-				<ScrollView style = {{flex: 1}}>
 					<View style = {{alignItems: 'center'}}>
 						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Create a Password</Text>
 						<Text style = {{color: '#212121', fontSize: 17, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}><Text style = {{fontWeight: 'bold'}}>Lock</Text> your selected notes with a password</Text>
@@ -135,12 +135,10 @@ class CreatePasswordActivity extends React.Component {
 
 						{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
 					</View>
-				</ScrollView>
 			);
 		}
 		if(this.state.passwordIsSet === 1) {
 			return(
-				<ScrollView style = {{flex: 1}}>
 					<View style = {{alignItems: 'center', flex: 1}}>
 						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Update Password</Text>
 						<Text style = {{color: '#212121', fontSize: 17, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}> Enter your old and new password</Text>
@@ -188,7 +186,6 @@ class CreatePasswordActivity extends React.Component {
 
 						{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
 					</View>
-					</ScrollView>
 			);
 		}
 		if(this.state.passwordIsSet === 3) {
@@ -210,6 +207,7 @@ class CreatePasswordActivity extends React.Component {
 				<View style = {{flex: 1, alignItems: 'center'}}>
 					{this.renderPage()}
 				</View>
+				<KeyboardSpacer />
 			</View>
 		);
 	}

@@ -39,6 +39,7 @@ class App extends React.Component {
 						<Scene key = "termsActivity" component = {TermsActivity}/>
 					</Scene>
 				</Router>
+
 			</Provider>
 		);
 	}
