@@ -11,7 +11,6 @@ import SearchBar from '../components/SearchBar';
 import Separator_1 from '../components/Separator_1';
 import SecondaryButton from '../components/SecondaryButton';
 import NoResult from '../components/NoResult';
-import { BoxShadow } from 'react-native-shadow';
 import ASService from '../utils/AsyncStorageService';
 
 class MainActivity extends React.Component {
@@ -83,13 +82,13 @@ class MainActivity extends React.Component {
 						<Text style = {{width: 150, textAlign: 'center', marginBottom: 80, fontSize: 17}}><Text style = {{fontWeight: 'bold', color: '#212121'}}>Tap</Text> on the plus button to add your first note</Text>
 						
 						<Animated.View style = {{top: this.state.animatePlus}}>
-							<BoxShadow setting = {shadow}>
+							
 								<TouchableWithoutFeedback onPress = {() => this.newNote()} useForeground = {true}>
 										<Animated.View style = {[addBtn, {opacity: this.state.fadeAnim}]}>
 											<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
 										</Animated.View>
 								</TouchableWithoutFeedback>
-							</BoxShadow>
+							
 						</Animated.View>
 					</View>
 				</View>
@@ -159,19 +158,6 @@ const addBtn = {
 	backgroundColor: ColorScheme.primary,
 	padding: 20,
 	borderRadius: 50
-}
-
-const shadow = {
-	width: 65,
-	height: 65,
-	color: '#dedede',
-	border: 10,
-	radius: 30,
-	opacity: 1,
-	x: 0,
-	y: 5,
-	style:{
-	}
 }
 
 function mapStateToProps(state) {

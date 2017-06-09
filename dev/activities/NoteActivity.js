@@ -6,10 +6,11 @@ import Services from '../utils';
 import { Actions } from 'react-native-router-flux';
 import AppBar from '../components/AppBar';
 import PrimaryButton from '../components/PrimaryButton';
-import { BoxShadow } from 'react-native-shadow';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
+import _ from 'underscore';
+
 
 class NoteActivity extends React.Component {
 
@@ -23,6 +24,7 @@ class NoteActivity extends React.Component {
 		this.saveNote = this.saveNote.bind(this);
 		this.onBack = this.onBack.bind(this);
 		this.promptSave = this.promptSave.bind(this);
+		this.onSubmitEditing = this.onSubmitEditing.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,6 +39,33 @@ class NoteActivity extends React.Component {
 	componentWillUnmount() {
 		BackHandler.removeEventListener('hardwareBackPressed', this.onBack)
 	}
+
+
+	onSubmitEditing = _.debounce(this._onSubmitEditingNote, 100, true);
+
+	_onSubmitEditingNote() {
+        const { noteText, cursorPosition } = this.state;
+        let newText = noteText;
+        const ar = newText.split('');
+        ar.splice(cursorPosition.start, 0, '\n');
+        newText = ar.join('');
+
+        if(cursorPosition.start === noteText.length) {
+        	this.setState({
+        		noteText: newText, 	
+        	});
+        }else{
+        	this.setState(
+        		{ 
+        			noteText: newText, 
+        			selection: {
+        				start: cursorPosition.start + 1,
+        				end: cursorPosition.end + 1
+        			}
+        		}
+        	);
+        }
+    }
 
 	onBack = () => {
 		if(this.props.action === 'new' || this.props.action === 'share') {
@@ -102,18 +131,20 @@ class NoteActivity extends React.Component {
 						multiline = {true} 
 						numberOfLines = {10} 
 						autoFocus = {true}
+						blurOnSubmit = {false}
 						style = {inputStyle}
+						selection = {this.state.selection}
+						onSelectionChange={(event) => this.setState({ cursorPosition: event.nativeEvent.selection, selection: event.nativeEvent.selection })}
 						autoCapitalize="sentences"
 						onChangeText = {(text) => {this.setState({noteText: text})}}
 						underlineColorAndroid = 'transparent' 
 						value = {this.state.noteText}
+						onSubmitEditing={this.onSubmitEditing}
 						placeholder = "Add a note"/>
 
-					<BoxShadow setting = {shadow}>
-						<View style = {controlsContainer}>
-							<PrimaryButton title = "Save" onPressFunction = {this.saveNote} color = {ColorScheme.primary}/>
-						</View>
-					</BoxShadow>
+					<View style = {controlsContainer}>
+						<PrimaryButton title = "Save" onPressFunction = {this.saveNote} color = {ColorScheme.primary}/>
+					</View>
 				</View>
 			</View>
 		);
@@ -129,25 +160,14 @@ const inputStyle = {
 }
 
 const controlsContainer = {
-	flex: 1,
+	padding: 10,
 	backgroundColor: '#fff',
 	justifyContent: 'center',
-	alignItems: 'flex-end'
+	alignItems: 'flex-end',
+	borderTopWidth: 8,
+	borderColor: 'rgba(0,0,0,0.03)'
 }
 
-const shadow = {
-	width: Dimensions.get('window').width,
-	height: 50,
-	color: '#dedede',
-	border: 20,
-	radius: 25,
-	opacity: 0.3,
-	x: 0,
-	y: 0,
-	style:{
-		
-	}
-}
 
 function mapStateToProps(state) {
 	return {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TouchableNativeFeedback, ScrollView, Dimensions, Alert, TextInput, AsyncStorage } from 'react-native';
-import { BoxShadow } from 'react-native-shadow';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import { ColorScheme, styles } from '../css/style';
@@ -96,7 +95,7 @@ class ViewNoteActivity extends React.Component {
 						<View style = {{alignItems: 'center'}}>
 							<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 25, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Note is Locked</Text>
 							<Text style = {{color: '#212121', fontSize: 15, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}>Enter password to view the note</Text>
-							<BoxShadow setting = {inputShadow}>
+							
 								<TextInput 
 									onChangeText = {(text) => {
 										this.setState({password: text})
@@ -106,7 +105,7 @@ class ViewNoteActivity extends React.Component {
 									underlineColorAndroid = 'transparent'
 									secureTextEntry = {true}
 									placeholder = "Enter Password"/>
-							</BoxShadow>
+
 							{this.showIncorrectPassword()}
 							<View style = {{flexDirection: 'row'}}>
 								<SecondaryButton title = "Dismiss" onPressFunction = {Actions.pop} withBorder = {true} color = {ColorScheme.text}/>
@@ -128,16 +127,14 @@ class ViewNoteActivity extends React.Component {
 							<Text style={dateTitleStyle}>Last updated:</Text>
 							<Text style = {dateStyle}>{moment(this.props.note.updated_on).format('ddd Do MMM YYYY').toString()}</Text>
 						</View>
-						<Text style = {textStyle}>
+						<Text style = {textStyle} selectable = {true}>
 							{this.props.note.note_text}
 						</Text>
 					</ScrollView>
-					<BoxShadow setting = {shadow}>
 						<View style = {controlsContainer}>
 							<SecondaryButton title = "Delete" withBorder = {true} color = {ColorScheme.redDark} onPressFunction = {this.deleteEntity}/>
 							<PrimaryButton title = "Edit" onPressFunction = {this.editNote} color = {ColorScheme.primary}/>
 						</View>
-					</BoxShadow>
 				</View>
 			);
 		}
@@ -168,19 +165,6 @@ const controlsContainer = {
 	alignItems: 'center'
 }
 
-const shadow = {
-	width: Dimensions.get('window').width,
-	height: 50,
-	color: '#dedede',
-	border: 20,
-	radius: 25,
-	opacity: 0.3,
-	x: 0,
-	y: 0,
-	style:{
-		
-	}
-}
 
 const inputShadow = {
 	width: Dimensions.get('window').width/1.5,

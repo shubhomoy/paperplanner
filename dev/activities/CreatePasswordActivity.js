@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, AsyncStorage, Dimensions, TextInput, Image, ScrollView } from 'react-native';
 import { ColorScheme } from '../css/style';
-import { BoxShadow } from 'react-native-shadow';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import ASService from'../utils/AsyncStorageService';
@@ -107,7 +106,7 @@ class CreatePasswordActivity extends React.Component {
 					<View style = {{alignItems: 'center'}}>
 						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Create a Password</Text>
 						<Text style = {{color: '#212121', fontSize: 17, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}><Text style = {{fontWeight: 'bold'}}>Lock</Text> your selected notes with a password</Text>
-						<BoxShadow setting = {shadow}>
+						
 							<TextInput 
 								onChangeText = {(text) => {
 									this.setState({password: text})
@@ -118,9 +117,7 @@ class CreatePasswordActivity extends React.Component {
 								underlineColorAndroid = 'transparent'
 								secureTextEntry = {true}
 								placeholder = "Password"/>
-						</BoxShadow>
-
-						<BoxShadow setting = {shadow}>
+						
 							<TextInput
 								onChangeText = {(text) => {
 									this.setState({confirmPassword: text});
@@ -131,7 +128,6 @@ class CreatePasswordActivity extends React.Component {
 								underlineColorAndroid = 'transparent'
 								secureTextEntry = {true}
 								placeholder = "Re-type Password"/>
-						</BoxShadow>
 
 						{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
 					</View>
@@ -142,7 +138,7 @@ class CreatePasswordActivity extends React.Component {
 					<View style = {{alignItems: 'center', flex: 1}}>
 						<Text style = {{color: ColorScheme.primary, fontWeight: 'bold', fontSize: 20, marginTop: 50, textAlign: 'center', marginBottom: 10}}>Update Password</Text>
 						<Text style = {{color: '#212121', fontSize: 17, textAlign: 'center', width: Dimensions.get('window').width/2, marginBottom: 30}}> Enter your old and new password</Text>
-						<BoxShadow setting = {shadow}>
+						
 							<TextInput 
 								onChangeText = {(text) => {
 									this.setState({oldPassword: text})
@@ -153,8 +149,7 @@ class CreatePasswordActivity extends React.Component {
 								underlineColorAndroid = 'transparent'
 								secureTextEntry = {true}
 								placeholder = "Old Password"/>
-						</BoxShadow>
-						<BoxShadow setting = {shadow}>
+						
 							<TextInput 
 								onChangeText = {(text) => {
 									this.setState({
@@ -167,9 +162,7 @@ class CreatePasswordActivity extends React.Component {
 								underlineColorAndroid = 'transparent'
 								secureTextEntry = {true}
 								placeholder = "New Password"/>
-						</BoxShadow>
-
-						<BoxShadow setting = {shadow}>
+						
 							<TextInput
 								onChangeText = {(text) => {
 									this.setState({
@@ -182,7 +175,6 @@ class CreatePasswordActivity extends React.Component {
 								underlineColorAndroid = 'transparent'
 								secureTextEntry = {true}
 								placeholder = "Re-type New Password"/>
-						</BoxShadow>
 
 						{this.state.match ? <PrimaryButton title = "Set Password" color = {ColorScheme.green} onPressFunction = {this.setPassword}/> : <PrimaryButton title = "Cancel" color = '#616161' onPressFunction = {Actions.pop}/>}
 					</View>
@@ -213,19 +205,6 @@ class CreatePasswordActivity extends React.Component {
 	}
 }
 
-const shadow = {
-	width: Dimensions.get('window').width/1.5,
-	height: 50,
-	color: '#dedede',
-	border: 20,
-	radius: 25,
-	opacity: 0.3,
-	x: 0,
-	y: 0,
-	style:{
-		marginBottom: 20
-	}
-}
 
 
 const pageStyle = {

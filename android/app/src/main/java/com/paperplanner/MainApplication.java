@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.benwixen.rnfilesystem.RNFileSystemPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import com.horcrux.svg.SvgPackage;
 import io.realm.react.RealmReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -29,7 +28,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNFileSystemPackage(),
             new RNGoogleSigninPackage(),
-            new SvgPackage(),
             new RealmReactPackage()
       );
     }
