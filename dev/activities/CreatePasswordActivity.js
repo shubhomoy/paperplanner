@@ -17,8 +17,9 @@ class CreatePasswordActivity extends React.Component {
 			confirmPassword: '',
 			oldPassword: '',
 			prevPass: '',
+			borderColor: ColorScheme.grey,
 			match: false,
-			borderWidth: 0
+			borderWidth: 0.5
 		}
 		this.renderPage = this.renderPage.bind(this);
 		this.handleInput = this.handleInput.bind(this);
@@ -55,11 +56,13 @@ class CreatePasswordActivity extends React.Component {
 		if(confirmPass === newPass && confirmPass.trim().length > 0) {
 			this.setState({
 				borderWidth: 1,
+				borderColor: ColorScheme.green,
 				match: true
 			});
 		}else{
 			this.setState({
-				borderWidth: 0,
+				borderWidth: 0.5,
+				borderColor: ColorScheme.grey,
 				match: false
 			});
 		}
@@ -69,11 +72,13 @@ class CreatePasswordActivity extends React.Component {
 		if(confirmPass === newPass && confirmPass.trim().length > 0 && this.state.prevPass === oldPass) {
 			this.setState({
 				borderWidth: 1,
+				borderColor: ColorScheme.green,
 				match: true
 			});
 		}else{
 			this.setState({
-				borderWidth: 0,
+				borderWidth: 0.5,
+				borderColor: ColorScheme.grey,
 				match: false
 			});
 		}
@@ -94,8 +99,9 @@ class CreatePasswordActivity extends React.Component {
 		const inputStyle = {
 			textAlign: 'center',
 			fontSize: 17,
+			marginBottom: 10, 
 			borderRadius: 5,
-			borderColor: ColorScheme.green,
+			borderColor: this.state.borderColor,
 			borderWidth: this.state.borderWidth,
 			backgroundColor: '#fff',
 			width: Dimensions.get('window').width/1.5

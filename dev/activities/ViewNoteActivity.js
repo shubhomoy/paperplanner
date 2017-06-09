@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableNativeFeedback, ScrollView, Dimensions, Alert, TextInput, AsyncStorage } from 'react-native';
+import { View, Text, TouchableNativeFeedback, ScrollView, Dimensions, Alert, TextInput, AsyncStorage, Image } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import { ColorScheme, styles } from '../css/style';
@@ -131,6 +131,7 @@ class ViewNoteActivity extends React.Component {
 							{this.props.note.note_text}
 						</Text>
 					</ScrollView>
+						<Image source = {require('../images/shadow.png')} resizeMode = "stretch" style = {{height: 20, width: Dimensions.get('window').width, opacity: 0.2}}/>
 						<View style = {controlsContainer}>
 							<SecondaryButton title = "Delete" withBorder = {true} color = {ColorScheme.redDark} onPressFunction = {this.deleteEntity}/>
 							<PrimaryButton title = "Edit" onPressFunction = {this.editNote} color = {ColorScheme.primary}/>
@@ -158,8 +159,8 @@ const textStyle = {
 }
 
 const controlsContainer = {
-	flex: 1,
 	flexDirection: 'row',
+	padding: 10,
 	backgroundColor: '#fff',
 	justifyContent: 'flex-end',
 	alignItems: 'center'

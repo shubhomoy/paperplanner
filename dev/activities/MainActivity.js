@@ -85,7 +85,7 @@ class MainActivity extends React.Component {
 							
 								<TouchableWithoutFeedback onPress = {() => this.newNote()} useForeground = {true}>
 										<Animated.View style = {[addBtn, {opacity: this.state.fadeAnim}]}>
-											<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
+											<Image source = {require('../images/add.png')} style = {{height: 20, width: 20}} />
 										</Animated.View>
 								</TouchableWithoutFeedback>
 							
@@ -143,7 +143,7 @@ class MainActivity extends React.Component {
 					ItemSeparatorComponent = {() => <Separator_1 />}/>
 					<TouchableWithoutFeedback onPress = {() => this.newNote()} useForeground = {true}>
 						<Animated.View style = {[addBtn, {flex: 1, flexDirection: 'row', position: 'absolute', bottom: this.state.translateAnim, right: 16}]}>
-							<Image source = {require('../images/add.png')} style = {{height: 25, width: 25}} />
+							<Image source = {require('../images/add.png')} style = {{height: 20, width: 20}} />
 						</Animated.View>
 					</TouchableWithoutFeedback>
 				<SearchBar />

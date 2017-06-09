@@ -142,6 +142,7 @@ class NoteActivity extends React.Component {
 						onSubmitEditing={this.onSubmitEditing}
 						placeholder = "Add a note"/>
 
+					<Image source = {require('../images/shadow.png')} resizeMode = "stretch" style = {{height: 20, width: Dimensions.get('window').width, opacity: 0.2}}/>
 					<View style = {controlsContainer}>
 						<PrimaryButton title = "Save" onPressFunction = {this.saveNote} color = {ColorScheme.primary}/>
 					</View>
@@ -163,9 +164,7 @@ const controlsContainer = {
 	padding: 10,
 	backgroundColor: '#fff',
 	justifyContent: 'center',
-	alignItems: 'flex-end',
-	borderTopWidth: 8,
-	borderColor: 'rgba(0,0,0,0.03)'
+	alignItems: 'flex-end'
 }
 
 
