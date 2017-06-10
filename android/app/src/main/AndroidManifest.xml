@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.paperplanner"
-    android:versionCode="2"
-    android:versionName="1.0.23.89">
+    android:versionCode="3"
+    android:versionName="1.0.26.112">
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -53,6 +53,10 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/noti" />
     </application>
 
 </manifest>
