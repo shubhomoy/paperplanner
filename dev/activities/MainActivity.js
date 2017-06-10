@@ -24,6 +24,7 @@ class MainActivity extends React.Component {
 			shareText: this.props.shareText
 		}
 		this.newNote = this.newNote.bind(this);
+		this.scroll = this.scroll.bind(this);
 		this.gotoSettings = this.gotoSettings.bind(this);
 		this.renderFirstNote = this.renderFirstNote.bind(this);
 		if(this.state.shareText) {
@@ -41,7 +42,7 @@ class MainActivity extends React.Component {
 	}
 
 	componentWillUpdate(nextProps, nextState) {
-		this.refs.list.scrollToOffset({x: 0, y: 0, animated: true})
+		
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -52,6 +53,13 @@ class MainActivity extends React.Component {
 		Actions.noteActivity({
 			action: 'new'}
 		);
+	}
+
+	scroll = () => {
+		if(this.props.app.scrollToTop) {
+			this.refs.list.scrollToOffset({x: 0, y: 0, animated: true});
+			this.props.notScrollToTop();
+		}
 	}
 
 	componentDidMount() {
@@ -149,6 +157,7 @@ class MainActivity extends React.Component {
 				<SearchBar />
 
 				{this.renderFirstNote()}
+				{this.scroll()}
 			</View>
 		);
 	}
@@ -162,13 +171,15 @@ const addBtn = {
 
 function mapStateToProps(state) {
 	return {
-		notes: state.notes
+		notes: state.notes,
+		app: state.app
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		getNotes: ACTIONS.getNotes
+		getNotes: ACTIONS.getNotes,
+		notScrollToTop: ACTIONS.notScrollToTop
 	}, dispatch);
 }
 

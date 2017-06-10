@@ -15,22 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "3377171971-17ma2dqut6mth4jmt5pb4pljlpf9iret.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.paperplanner",
-            "certificate_hash": "735e13bc490a289bc81be3d7732f3bd91b11a4dd"
-          }
-        },
-        {
-          "client_id": "3377171971-hp3c56n2c48pepm2tkgtog6hvp5gle3p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.paperplanner",
-            "certificate_hash": "b23915c82840ba1680b45b5ea673d199b605f29a"
-          }
-        },
-        {
           "client_id": "3377171971-r238ga4jsh4oppcnq8bomj3q527hju0b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

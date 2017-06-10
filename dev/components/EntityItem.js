@@ -22,7 +22,8 @@ class EntityItem extends React.Component {
 			unlockSetup: false,
 			typedPassword: '',
 			errorText: '',
-			copyAnim: new Animated.Value(0)
+			copyAnim: new Animated.Value(0),
+			deleteAnim: new Animated.Value()
 		}
 		this.lockNote = this.lockNote.bind(this);
 		this.unlockNote = this.unlockNote.bind(this);
@@ -140,10 +141,15 @@ class EntityItem extends React.Component {
 				{
 					text: 'Yes',
 					onPress: () => {
-						realm.write(() => {
-							let note = realm.objectForPrimaryKey('Note', this.props.note.id);
-							realm.delete(note);
-							this.props.getNotes();
+						this.state.deleteAnim.setValue(this.state.minHeight);
+						Animated.timing(this.state.deleteAnim, {
+							toValue: 0
+						}).start(() => {
+							realm.write(() => {
+								let note = realm.objectForPrimaryKey('Note', this.props.note.id);
+								realm.delete(note);
+								this.props.getNotes();
+							});
 						});
 					}
 				}
@@ -198,6 +204,12 @@ class EntityItem extends React.Component {
 			});	
 		}
 		
+	}
+
+	_setMinHeight(event){
+    	this.setState({
+        	minHeight   : event.nativeEvent.layout.height
+    	});
 	}
 
 	shareNote = () => {
@@ -276,7 +288,7 @@ class EntityItem extends React.Component {
 		}else{
 			return(
 				<TouchableHighlight ref = "item" onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
-					<View>
+					<Animated.View onLayout={this._setMinHeight.bind(this)} style = {{height: this.state.deleteAnim}}>
 						<View style = {itemStyle}>
 							<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.state.isLocked ? this.props.note.title : this.props.note.note_text}</Text>	
 							<View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
@@ -291,7 +303,7 @@ class EntityItem extends React.Component {
 						<Animated.View style= {[{backgroundColor: ColorScheme.primary, height: 0, justifyContent: 'center', alignItems: 'center'}, {height: this.state.copyAnim}]}>
 							<Text style = {{color: '#fff', textAlign: 'center', fontWeight: 'bold'}}>Note Copied</Text>
 						</Animated.View>
-					</View>
+					</Animated.View>
 				</TouchableHighlight>
 			);
 		}

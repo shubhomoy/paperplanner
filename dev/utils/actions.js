@@ -23,6 +23,18 @@ const ACTIONS = {
 				isSearching: false
 			}
 		}
+	},
+
+	scrollToTop: () => {
+		return {
+			type: 'SCROLL'
+		}
+	},
+
+	notScrollToTop: () => {
+		return {
+			type: 'NOT_SCROLL'
+		}
 	}
 }
 export default ACTIONS;

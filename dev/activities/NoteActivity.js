@@ -118,6 +118,7 @@ class NoteActivity extends React.Component {
 				note.updated_on = new Date();
 			});
 		}
+		this.props.scrollToTop();
 		this.props.getNotes();
 		Actions.pop();
 	}
@@ -175,7 +176,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		getNotes: ACTIONS.getNotes
+		getNotes: ACTIONS.getNotes,
+		scrollToTop: ACTIONS.scrollToTop
 	}, dispatch);
 }
 

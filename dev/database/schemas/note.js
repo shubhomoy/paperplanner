@@ -7,6 +7,7 @@ Note.schema = {
 		title: {type: 'string', default: ''},
 		note_text: 'string',
 		is_locked: { type: 'bool', default: false},
+		color: { type: 'string', default: '#fff'  },
 		created_on: 'date',
 		updated_on: 'date'
 	}

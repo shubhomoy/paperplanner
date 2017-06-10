@@ -167,26 +167,13 @@ const controlsContainer = {
 }
 
 
-const inputShadow = {
-	width: Dimensions.get('window').width/1.5,
-	height: 50,
-	color: '#dedede',
-	border: 20,
-	radius: 25,
-	opacity: 0.3,
-	x: 0,
-	y: 0,
-	style:{
-		marginBottom: 20
-	}
-}
-
 const inputStyle = {
 	textAlign: 'center',
 	fontSize: 17,
 	borderRadius: 5,
 	backgroundColor: '#fff',
-	width: Dimensions.get('window').width/1.5
+	width: Dimensions.get('window').width/1.5,
+	borderWidth: 0.5
 }
 
 function mapStateToProps(state) {

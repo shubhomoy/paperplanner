@@ -7,7 +7,11 @@ export const ColorScheme = {
 	redDark: '#B71C1C',
 	green: '#4CAF50',
 	text: '#212121',
-	deepYellow: '#F57F17'
+	deepYellow: '#F57F17',
+
+	noteColor: {
+		white: '#fff'
+	}
 }
 
 export const styles = {
