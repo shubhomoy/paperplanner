@@ -19,7 +19,11 @@ class NoteActivity extends React.Component {
 		
 		this.state = {
 			note: this.props.note,
-			noteText: ''
+			noteText: '',
+			cursorPosition: {
+				start: 0,
+				end: 0
+			}
 		}
 		this.saveNote = this.saveNote.bind(this);
 		this.onBack = this.onBack.bind(this);

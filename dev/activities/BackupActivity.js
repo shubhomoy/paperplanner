@@ -4,14 +4,14 @@ import { ColorScheme } from '../css/style';
 import { Actions } from 'react-native-router-flux';
 import AppBar from '../components/AppBar';
 import PrimaryButton from '../components/PrimaryButton';
-import {GoogleSignin} from 'react-native-google-signin';
-import { getAppAsJson, setNotes } from '../utils/RealmEncoderDecoder';
+import { GoogleSignin } from 'react-native-google-signin';
 import Constants from '../utils/Constants';
 import ASService from '../utils/AsyncStorageService';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
 import _ from 'underscore';
+import Services from '../utils';
 
 GoogleSignin.configure({
 	scopes: ["https://www.googleapis.com/auth/drive.appdata"],
@@ -37,13 +37,15 @@ class BackupActivity extends React.Component {
 	}
 
 	componentWillMount() {
-		GoogleSignin.revokeAccess()
-		.then(() => {
-		  console.log('deleted');
-		})
-		.catch((err) => {
+		GoogleSignin.currentUserAsync().then((user) => {
+			if(user) {
+				GoogleSignin.revokeAccess().then(() => {
+				  console.log('deleted');
+				}).catch((err) => {
 
-		})
+				});
+			}
+		}).done();
 		AsyncStorage.getItem(Constants.STORE).then((obj) => {
 			this.setState({
 				accountName: JSON.parse(obj).googleAccountName
@@ -126,7 +128,7 @@ class BackupActivity extends React.Component {
 		}).then(body => {
 			if(!backup) {
 				this.showImportMessage('Import Complete');
-				setNotes(body.notes, () => {
+				Services.setNotes(body.notes, () => {
 					this.props.getNotes();
 				});
 			}else{
@@ -205,7 +207,7 @@ class BackupActivity extends React.Component {
 	}
 
 	backupUtil = (accessToken, backedUpNotes = []) => {
-		let entities = getAppAsJson();
+		let entities = Services.getAppAsJson();
 		let backedUpIds = _.pluck(backedUpNotes, 'id');
 		let existingIds = _.pluck(entities.notes, 'id');
 		let allIds = _.union(existingIds, backedUpIds);

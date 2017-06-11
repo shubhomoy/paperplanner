@@ -1,5 +1,4 @@
 import realm from '../database';
-import Services from './';
 import _ from 'underscore';
 
 export const getNotesAsJson = () => {
