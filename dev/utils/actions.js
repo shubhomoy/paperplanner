@@ -35,6 +35,44 @@ const ACTIONS = {
 		return {
 			type: 'NOT_SCROLL'
 		}
+	},
+
+	multipleOpen: () => {
+		return {
+			type: 'MULTIPLE_OPEN'
+		}
+	},
+
+	multipleClose: () => {
+		return {
+			type: 'MULTIPLE_CLOSE'
+		}
+	},
+
+	mark: (id) => {
+		return {
+			type: 'MARK',
+			data: id
+		}
+	},
+
+	unmark: (id) => {
+		return {
+			type: 'UNMARK',
+			data: id
+		}
+	},
+
+	markAll: () => {
+		return {
+			type: 'MARK_ALL'
+		}
+	},
+
+	unmarkAll: () => {
+		return {
+			type: 'UNMARK_ALL'
+		}
 	}
 }
 export default ACTIONS;

@@ -11,6 +11,7 @@ import { Actions } from 'react-native-router-flux';
 import PrimaryButton from './PrimaryButton';
 import SecondaryButton from './SecondaryButton';
 import Constants from '../utils/Constants';
+import Checkbox from './Checkbox';
 
 class EntityItem extends React.Component {
 	constructor(props) {
@@ -233,10 +234,18 @@ class EntityItem extends React.Component {
 		}
 	}
 
+	showCheckbox = () => {
+		if(this.props.multiple) {
+			return <Checkbox item = {this.props.note} />
+		}else{
+			return null;
+		}
+	}
+
 	render() {
 		if(this.state.titleSetup) {
 			return(
-				<View style = {[itemStyle, {justifyContent: 'center', alignItems: 'center'}]}>
+				<View style = {[itemStyle, {justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}]}>
 					<Text style = {{fontSize: 17, color: ColorScheme.text, paddingLeft: 20, paddingRight: 20}}>Provide a title for this note</Text>
 					<TextInput 
 						onChangeText = {(text) => this.setState({title: text})}
@@ -254,7 +263,7 @@ class EntityItem extends React.Component {
 			);
 		}else if(this.state.unlockSetup) {
 			return(
-				<View style = {[itemStyle, {justifyContent: 'center', alignItems: 'center'}]}>
+				<View style = {[itemStyle, {justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}]}>
 					<Text style = {{fontSize: 17, color: ColorScheme.text, paddingLeft: 20, paddingRight: 20}}>Enter password to unlock this note</Text>
 					<TextInput 
 						secureTextEntry = {true}
@@ -273,7 +282,7 @@ class EntityItem extends React.Component {
 			return(
 				<View>
 					<TouchableHighlight onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
-						<View style = {itemStyle}>
+						<View style = {[itemStyle, {flexDirection: 'column'}]}>
 							<View style = {{flexDirection: 'row', alignItems: 'center'}}>
 								{this.renderLock()}
 								<Text style = {[itemTextStyle, {fontWeight: 'bold'}]} ellipsizeMode = "tail" numberOfLines = {10}>{this.props.note.title}</Text>	
@@ -287,16 +296,19 @@ class EntityItem extends React.Component {
 			);
 		}else{
 			return(
-				<TouchableHighlight ref = "item" onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary}>
+				<TouchableHighlight ref = "item" onPress = {() => this.openNote()} activeOpacity = {0.98} underlayColor = {ColorScheme.primary} onLongPress = {() => this.props.multipleOpen()}>
 					<Animated.View onLayout={this._setMinHeight.bind(this)} style = {{height: this.state.deleteAnim}}>
 						<View style = {itemStyle}>
-							<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.state.isLocked ? this.props.note.title : this.props.note.note_text}</Text>	
-							<View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-								{this.renderLock()}
-								<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
-									<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.deleteEntity} image = {require('../images/remove.png')}/>
-									<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.copyNote} image = {require('../images/copy.png')}/>
-									<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.shareNote} image = {require('../images/share.png')}/>
+							{this.showCheckbox()}
+							<View style = {{flex: 1}}>
+								<Text style = {itemTextStyle} ellipsizeMode = "tail" numberOfLines = {10}>{this.state.isLocked ? this.props.note.title : this.props.note.note_text}</Text>	
+								<View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
+									{this.renderLock()}
+									<View style = {{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1}}> 
+										<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.deleteEntity} image = {require('../images/remove.png')}/>
+										<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.copyNote} image = {require('../images/copy.png')}/>
+										<ImageButton onPressFunction={this.props.note.is_locked ? () => {} : this.shareNote} image = {require('../images/share.png')}/>
+									</View>
 								</View>
 							</View>
 						</View>
@@ -315,6 +327,7 @@ const switchStyle = {
 
 const itemStyle = {
 	flex: 1,
+	flexDirection: 'row',
 	backgroundColor: '#fff',
 	paddingLeft: 25,
 	paddingRight: 25,
@@ -330,12 +343,14 @@ const itemTextStyle = {
 
 function mapStateToProps(state) {
 	return {
+		multiple: state.app.multiple
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		getNotes: ACTIONS.getNotes
+		getNotes: ACTIONS.getNotes,
+		multipleOpen: ACTIONS.multipleOpen
 	}, dispatch);
 }
 

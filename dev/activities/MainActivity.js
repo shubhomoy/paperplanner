@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableWithoutFeedback, Image, Dimensions, Text, FlatList, Button, Animated } from 'react-native';
+import { View, TouchableWithoutFeedback, Image, Dimensions, Text, FlatList, Button, Animated, BackHandler } from 'react-native';
 import { ColorScheme } from '../css/style';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
@@ -12,6 +12,7 @@ import Separator_1 from '../components/Separator_1';
 import SecondaryButton from '../components/SecondaryButton';
 import NoResult from '../components/NoResult';
 import ASService from '../utils/AsyncStorageService';
+import MultipleHeader from '../components/MultipleHeader';
 
 class MainActivity extends React.Component {
 
@@ -27,6 +28,7 @@ class MainActivity extends React.Component {
 		this.scroll = this.scroll.bind(this);
 		this.gotoSettings = this.gotoSettings.bind(this);
 		this.renderFirstNote = this.renderFirstNote.bind(this);
+		this.onBack = this.onBack.bind(this);
 		if(this.state.shareText) {
 			Actions.noteActivity({
 				note: this.state.shareText,
@@ -41,12 +43,8 @@ class MainActivity extends React.Component {
 
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPressed', this.onBack)
 	}
 
 	newNote = () => {
@@ -63,6 +61,7 @@ class MainActivity extends React.Component {
 	}
 
 	componentDidMount() {
+		BackHandler.addEventListener('hardwareBackPressed', this.onBack);
 		Animated.spring(this.state.translateAnim, {
 			toValue: 16,
 			friction: 2,
@@ -79,6 +78,14 @@ class MainActivity extends React.Component {
 
 	gotoSettings = () => {
 		Actions.settingsActivity();
+	}
+
+	onBack = () => {
+		if(this.props.app.multiple) {
+			this.props.multipleClose();
+			return true;
+		}
+		return false;
 	}
 
 	renderFirstNote = () => {
@@ -110,6 +117,12 @@ class MainActivity extends React.Component {
 		const showTitle = () => {
 			if(this.props.notes.isSearching) {
 				return 'Result (' + this.props.notes.activeNotes.length + ')';
+			}else if(this.props.app.markAll) {
+				return 'Selected (' + this.props.notes.allNotes.length + ')';
+			}else if(this.props.app.selectedItems.length) {
+				return 'Selected (' + this.props.app.selectedItems.length + ')';
+			}else if(this.props.app.multiple){
+				return 'None selected';
 			}else{
 				return 'All notes (' + this.props.notes.allNotes.length + ')';
 			}
@@ -154,7 +167,7 @@ class MainActivity extends React.Component {
 							<Image source = {require('../images/add.png')} style = {{height: 20, width: 20}} />
 						</Animated.View>
 					</TouchableWithoutFeedback>
-				<SearchBar />
+				{ this.props.app.multiple ? <MultipleHeader /> : <SearchBar />}
 
 				{this.renderFirstNote()}
 				{this.scroll()}
@@ -179,7 +192,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		getNotes: ACTIONS.getNotes,
-		notScrollToTop: ACTIONS.notScrollToTop
+		notScrollToTop: ACTIONS.notScrollToTop,
+		multipleClose: ACTIONS.multipleClose
 	}, dispatch);
 }
 

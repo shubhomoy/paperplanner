@@ -39,3 +39,18 @@ export const setNotes = (notes, cb) => {
 		cb();
 	});
 }
+
+export const deleteAllNotes = () => {
+	realm.write(() => {
+		realm.delete(realm.objects('Note'))
+	});
+}
+
+export const deleteSelectedNotes = (ids) => {
+	realm.write(() => {
+		ids.forEach((id) => {
+			let note = realm.objectForPrimaryKey('Note', id);
+			realm.delete(note);
+		});
+	});
+}
