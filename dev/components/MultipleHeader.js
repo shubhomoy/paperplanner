@@ -26,7 +26,30 @@ class MultipleHeader extends React.Component {
 		Animated.timing(this.state.entryAnim, {
 			toValue: 0
 		}).start();
+
+		this.setState({
+			totalNotes: this.props.notes.allNotes.filter((item) => {
+				if(!item.is_locked) {
+					return item;
+				}
+			}).length
+		})
 	}
+
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.app.selectedItems.length === this.state.totalNotes) {
+			this.setState({
+				markText: 'Unmark all',
+				isChecked: true
+			});
+		}else{
+			this.setState({
+				markText: 'Mark all',
+				isChecked: false
+			});
+		}
+	}
+
 
 	toggle = () => {
 		if(this.state.isChecked){
@@ -40,7 +63,14 @@ class MultipleHeader extends React.Component {
 				markText: 'Unmark all',
 				isChecked: true
 			});
-			this.props.markAll();
+			var notes = this.props.notes.allNotes.filter((item) => {
+				if(!item.is_locked)
+					return item;
+			});
+			notes = notes.map((item) => {
+				return item.id;
+			});
+			this.props.markAll(notes);
 		}
 	}
 
@@ -65,7 +95,7 @@ class MultipleHeader extends React.Component {
 	}
 
 	showDelete = () => {
-		if(this.props.app.markAll || this.props.app.selectedItems.length) {
+		if(this.props.app.selectedItems.length) {
 			Animated.timing(this.state.opacityAnim, {
 				toValue: 1
 			}).start();
@@ -92,7 +122,7 @@ class MultipleHeader extends React.Component {
 			<Animated.View style = {[searchContainer, {top: this.state.entryAnim}]}>
 				<TouchableWithoutFeedback onPress = {() => this.toggle()}>
 					<View style = {{marginRight: 10, marginLeft: 25, flexDirection: 'row', alignItems: 'center'}}>
-						<Image source = {this.props.app.selectedItems.length == this.props.notes.allNotes.length ? require('../images/success.png') : require('../images/untick.png')} style = {tick_style}/>
+						<Image source = {this.state.isChecked ? require('../images/success.png') : require('../images/untick.png')} style = {tick_style}/>
 						<Text style = {{color: ColorScheme.primary}}>
 							{this.state.markText}
 						</Text>

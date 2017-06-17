@@ -118,7 +118,10 @@ class MainActivity extends React.Component {
 			if(this.props.notes.isSearching) {
 				return 'Result (' + this.props.notes.activeNotes.length + ')';
 			}else if(this.props.app.markAll) {
-				return 'Selected (' + this.props.notes.allNotes.length + ')';
+				return 'Selected (' + this.props.notes.allNotes.filter((item) => {
+					if(!item.is_locked)
+						return item;
+				}).length + ')';
 			}else if(this.props.app.selectedItems.length) {
 				return 'Selected (' + this.props.app.selectedItems.length + ')';
 			}else if(this.props.app.multiple){

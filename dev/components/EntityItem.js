@@ -142,6 +142,7 @@ class EntityItem extends React.Component {
 				{
 					text: 'Yes',
 					onPress: () => {
+						this.props.unmark(this.props.note.id);
 						this.state.deleteAnim.setValue(this.state.minHeight);
 						Animated.timing(this.state.deleteAnim, {
 							toValue: 0
@@ -350,7 +351,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		getNotes: ACTIONS.getNotes,
-		multipleOpen: ACTIONS.multipleOpen
+		multipleOpen: ACTIONS.multipleOpen,
+		unmark: ACTIONS.unmark
 	}, dispatch);
 }
 

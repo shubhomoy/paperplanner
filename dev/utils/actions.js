@@ -63,9 +63,10 @@ const ACTIONS = {
 		}
 	},
 
-	markAll: () => {
+	markAll: (notes) => {
 		return {
-			type: 'MARK_ALL'
+			type: 'MARK_ALL',
+			data: notes
 		}
 	},
 

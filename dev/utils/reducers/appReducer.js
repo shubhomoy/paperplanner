@@ -3,8 +3,7 @@ let initialState = {
 	hideKeyboard: false,
 	scrollToTop: false,
 	multiple: false,
-	selectedItems: [],
-	markAll: false
+	selectedItems: []
 }
 
 export default (state = initialState, action) => {
@@ -26,11 +25,11 @@ export default (state = initialState, action) => {
 			return state;
 			break;
 		case 'MULTIPLE_OPEN':
-			state = Object.assign({}, state, {multiple: true, selectedItems: [], markAll: false});
+			state = Object.assign({}, state, {multiple: true, selectedItems: []});
 			return state;
 			break;
 		case 'MULTIPLE_CLOSE':
-			state = Object.assign({}, state, {multiple: false, selectedItems: [], markAll: false});
+			state = Object.assign({}, state, {multiple: false, selectedItems: []});
 			return state;
 			break;
 		case 'MARK':
@@ -42,17 +41,18 @@ export default (state = initialState, action) => {
 		case 'UNMARK':
 			state = Object.assign({}, state, {
 				selectedItems: state.selectedItems.filter((val) => {
-					return val != action.data
+					if(val != action.data)
+						return val;
 				})
 			});
 			return state;
 			break;
 		case 'MARK_ALL':
-			state = Object.assign({}, state, {markAll: true, selectedItems: []});
+			state = Object.assign({}, state, {selectedItems: action.data});
 			return state;
 			break;
 		case 'UNMARK_ALL':
-			state = Object.assign({}, state, {markAll: false, selectedItems: []});
+			state = Object.assign({}, state, {selectedItems: []});
 			return state;
 			break;
 		default:

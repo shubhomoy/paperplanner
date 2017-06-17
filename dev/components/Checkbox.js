@@ -26,19 +26,16 @@ class Checkbox extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(!this.props.markAll) {
+		if(nextProps.selectedItems.indexOf(this.props.item.id) !== -1) {
 			this.setState({
 				isChecked: true
 			});
-			this.props.mark(this.props.item.id);
 		}else{
 			this.setState({
 				isChecked: false
 			});
-			this.props.unmark(this.props.item.id);
 		}
 	}
-
 
 	toggle = () => {
 		if(!this.state.isChecked) {
@@ -72,8 +69,7 @@ const tick_style = {
 
 function mapStateToProps(state) {
 	return {
-		multiple: state.app.multiple,
-		markAll: state.app.markAll
+		selectedItems: state.app.selectedItems
 	}
 }
 
