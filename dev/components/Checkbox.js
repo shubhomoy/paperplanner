@@ -26,10 +26,16 @@ class Checkbox extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(this.props.markAll) {
+		if(!this.props.markAll) {
+			this.setState({
+				isChecked: true
+			});
+			this.props.mark(this.props.item.id);
+		}else{
 			this.setState({
 				isChecked: false
-			})
+			});
+			this.props.unmark(this.props.item.id);
 		}
 	}
 
@@ -52,7 +58,7 @@ class Checkbox extends React.Component {
 		return(
 			<TouchableWithoutFeedback onPress = {() => {this.toggle()}}>
 				<Animated.View style = {{marginRight: 10, marginTop: 3, width: this.state.showAnim, opacity: this.state.opacityAnim}}>
-					<Image source = {this.state.isChecked || this.props.markAll ? require('../images/success.png') : require('../images/untick.png')} style = {tick_style}/>
+					<Image source = {this.state.isChecked ? require('../images/success.png') : require('../images/untick.png')} style = {tick_style}/>
 				</Animated.View>
 			</TouchableWithoutFeedback>
 		);

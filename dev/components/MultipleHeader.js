@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Image, TouchableNativeFeedback, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, Text, TextInput, Image, TouchableNativeFeedback, TouchableWithoutFeedback, Animated, Alert } from 'react-native';
 import { ColorScheme, styles } from '../css/style';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,11 +14,18 @@ class MultipleHeader extends React.Component {
 		this.state = {
 			isChecked: false,
 			markText: 'Mark all',
-			opacityAnim: new Animated.Value(0)
+			opacityAnim: new Animated.Value(0),
+			entryAnim: new Animated.Value(-55)
 		}
 		this.toggle = this.toggle.bind(this);
 		this.showDelete = this.showDelete.bind(this);
 		this.deleteSelected = this.deleteSelected.bind(this);
+	}
+
+	componentDidMount() {
+		Animated.timing(this.state.entryAnim, {
+			toValue: 0
+		}).start();
 	}
 
 	toggle = () => {
@@ -38,14 +45,22 @@ class MultipleHeader extends React.Component {
 	}
 
 	deleteSelected = () => {
-		if(this.props.app.markAll) {
-			Services.deleteAllNotes();
-			this.props.getNotes();
-			this.props.multipleClose();
-		}else if(this.props.app.selectedItems.length) {
-			Services.deleteSelectedNotes(this.props.app.selectedItems);
-			this.props.getNotes();
-			this.props.multipleClose();
+		if(this.props.app.selectedItems.length) {
+			Alert.alert('Delete Notes', 'Are you sure you want to delete?',
+				[
+					{
+						text: 'No'
+					},
+					{
+						text: 'Yes',
+						onPress: () => {
+							Services.deleteSelectedNotes(this.props.app.selectedItems);
+							this.props.getNotes();
+							this.props.multipleClose();
+						}
+					}
+				]
+			);
 		}
 	}
 
@@ -74,17 +89,17 @@ class MultipleHeader extends React.Component {
 
 	render() {
 		return(
-			<View style = {searchContainer}>
+			<Animated.View style = {[searchContainer, {top: this.state.entryAnim}]}>
 				<TouchableWithoutFeedback onPress = {() => this.toggle()}>
 					<View style = {{marginRight: 10, marginLeft: 25, flexDirection: 'row', alignItems: 'center'}}>
-						<Image source = {this.state.isChecked ? require('../images/success.png') : require('../images/untick.png')} style = {tick_style}/>
+						<Image source = {this.props.app.selectedItems.length == this.props.notes.allNotes.length ? require('../images/success.png') : require('../images/untick.png')} style = {tick_style}/>
 						<Text style = {{color: ColorScheme.primary}}>
 							{this.state.markText}
 						</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				{this.showDelete()}
-			</View>
+			</Animated.View>
 		);
 	}
 }
@@ -99,7 +114,8 @@ const searchContainer = {
 	width: '100%',
 	flexDirection: 'row', 
 	alignItems: 'center', 
-	height: 55, 
+	height: 55,
+	top: -55, 
 	position: 'absolute',
 	backgroundColor: 'rgba(255,255,255,0.8)'
 }
@@ -131,7 +147,8 @@ const textInputStyle = {
 
 function mapStateToProps(state) {
 	return {
-		app: state.app
+		app: state.app,
+		notes: state.notes
 	}
 }
 

@@ -11,10 +11,17 @@ class SearchBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showCross: false
+			showCross: false,
+			entryAnim: new Animated.Value(-55)
 		}
 		this.handleInput = this.handleInput.bind(this);
 		this.renderClose = this.renderClose.bind(this);
+	}
+
+	componentDidMount() {
+		Animated.timing(this.state.entryAnim, {
+			toValue: 0
+		}).start();
 	}
 
 
@@ -42,7 +49,7 @@ class SearchBar extends React.Component {
 
 	render() {
 		return(
-			<View style = {searchContainer}>
+			<Animated.View style = {[searchContainer, {top: this.state.entryAnim}]}>
 				<View style = {container}>
 					<Image source = {require('../images/search.png')} style = {{height: 20, width: 20}}/>
 					<TextInput
@@ -54,7 +61,7 @@ class SearchBar extends React.Component {
 						placeholder = "Search Notes" />
 					{this.renderClose()}
 				</View>
-			</View>
+			</Animated.View>
 		);
 	}
 }
@@ -64,7 +71,8 @@ const searchContainer = {
 	flexDirection: 'row', 
 	alignItems: 'center', 
 	justifyContent: 'flex-start',
-	height: 55, 
+	height: 55,
+	top: -55, 
 	position: 'absolute',
 	backgroundColor: 'rgba(255,255,255,0.8)'
 }
