@@ -5,7 +5,7 @@ let app = {
 	is_password_set: false,
 	password: '',
 	googleAccountName: 'Not signed in',
-	lastBackup: '',
+	lastBackup: 'NA',
 	notes: []
 }
 

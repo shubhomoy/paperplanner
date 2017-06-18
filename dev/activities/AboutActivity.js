@@ -12,8 +12,8 @@ export default class AboutActivity extends React.Component {
 				<View style = {{alignItems: 'center', flex: 1}}>
 					<Image source = {require('../images/logo.png')} style = {{height: 100, width: 100, marginTop: 30}}/>
 					<Text style = {titleStyle}>Paper</Text>
-					<Text style = {versionStyle}>Version 1.0.26</Text>
-					<Text style = {[versionStyle, {color: '#757575'}]}>Build #112</Text>
+					<Text style = {versionStyle}>Version 1.1.2</Text>
+					<Text style = {[versionStyle, {color: '#757575'}]}>Build #120</Text>
 				</View>
 				<View style = {{flex: 1, justifyContent: 'flex-end', alignItems:'center'}}>
 					<TouchableNativeFeedback onPress = {Actions.termsActivity}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableNativeFeedback, ScrollView, Animated, AsyncStorage } from 'react-native';
+import { View, Text, Image, TouchableNativeFeedback, ScrollView, Animated, AsyncStorage, Alert } from 'react-native';
 import { ColorScheme } from '../css/style';
 import { Actions } from 'react-native-router-flux';
 import AppBar from '../components/AppBar';
@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import ACTIONS from '../utils/actions';
 import _ from 'underscore';
 import Services from '../utils';
+import moment from 'moment';
 
 GoogleSignin.configure({
 	scopes: ["https://www.googleapis.com/auth/drive.appdata"],
@@ -28,12 +29,28 @@ class BackupActivity extends React.Component {
 		this.state = {
 			backupText: '',
 			importText: '',
+			lastBackup: 'NA',
 			backupAnimation: new Animated.Value(0),
 			importAnimation: new Animated.Value(0),
 			accountName: 'Not signed in'
 		}
 		this.backup = this.backup.bind(this);
 		this.importNotes = this.importNotes.bind(this);
+	}
+
+	componentDidMount() {
+		AsyncStorage.getItem(Constants.STORE).then((obj) => {
+			let app = JSON.parse(obj);
+			if(app.lastBackup === 'NA') {
+				this.setState({
+					lastBackup: 'NA'
+				})
+			}else{
+				this.setState({
+					lastBackup: moment(app.lastBackup).format('Do MMM YYYY').toString()
+				})
+			}			
+		}).done();
 	}
 
 	componentWillMount() {
@@ -193,7 +210,23 @@ class BackupActivity extends React.Component {
 				}).then(body => {
 					if(body && body.files && body.files.length > 0) {
 						let fileId = body.files[0].id;
-						this.downloadFile(fileId, user.accessToken, true);
+						Alert.alert('Backup Found', 'An existing backup is found. Do you want to overwrite or update the past backup?', [
+							{
+								text: 'Overwrite',
+								onPress: () => {
+									this.backupUtil(user.accessToken);
+								}
+							},
+							{
+								text: 'Update',
+								onPress: () => {
+									this.downloadFile(fileId, user.accessToken, true);
+								}
+							}
+						],
+						{
+							cancelable: false
+						});
 					}else{
 						this.backupUtil(user.accessToken);
 					}
@@ -228,6 +261,9 @@ class BackupActivity extends React.Component {
 		AsyncStorage.getItem(Constants.STORE).then((obj) => {
 			let app = JSON.parse(obj);
 			app.lastBackup = (new Date()).toString();
+			this.setState({
+				lastBackup: moment(app.lastBackup).format('Do MMM YYYY').toString()
+			})
 			ASService.setItem(app);
 			app = Object.assign({}, app, notesToBackup);
 			app = JSON.stringify(app);
@@ -260,7 +296,10 @@ class BackupActivity extends React.Component {
 								Backup your notes to <Text style = {{fontWeight: 'bold'}}>Google Drive</Text>. You can restore them when you reinstall Paper.
 							</Text>
 						</View>
-						<View style = {{flexDirection: 'row', paddingLeft: 65, paddingTop: 30}}>
+						<Text style = {[textStyle, {paddingLeft: 70, flex: 1, paddingRight: 20, color: '#9e9e9e', paddingTop: 30, fontSize: 13}]}>
+							<Text style = {{color: ColorScheme.text}}>Last Backup:</Text> {this.state.lastBackup}
+						</Text>
+						<View style = {{flexDirection: 'row', paddingLeft: 65, paddingTop: 10}}>
 							<PrimaryButton title = "Backup" color = {ColorScheme.primary} onPressFunction = {this.backup}/>
 						</View>
 						<Animated.View style = {[errorStyle, {height: this.state.backupAnimation}]}>
